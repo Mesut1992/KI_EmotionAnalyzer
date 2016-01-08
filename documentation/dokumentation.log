@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.7.19)  27 DEC 2015 17:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (MiKTeX 2.9) (preloaded format=pdflatex 2015.7.19)  8 JAN 2016 17:36
 entering extended mode
 **C:/Users/kuscum/Documents/Studium/DHBW*Theoriesemester/5.*Semester/Wissensbas
 ierten*Systeme/WB15Proj/documentation/dokumentation.tex
@@ -1380,13 +1380,6 @@ File: lstlang2.sty 2015/06/04 1.6 listings language file
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\listings\lstmisc.sty"
 File: lstmisc.sty 2015/06/04 1.6 (Carsten Heinz)
 ))
-\glswrite=\write6
-\glo@main@file=\write7
-Package glossaries Info: Writing glossary file dokumentation.glo on input line 
-16.
-
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\ads/glossary.tex")
 Package csquotes Info: Checking for multilingual support...
 Package csquotes Info: ... found 'babel' package.
 Package biblatex Info: Trying to load language 'ngerman'...
@@ -1552,7 +1545,7 @@ me/WB15Proj/documentation/images/firma-deckblatt.png> <C:/Users/kuscum/Document
 s/Studium/DHBW Theoriesemester/5. Semester/Wissensbasierten Systeme/WB15Proj/do
 cumentation/images/dhbw.png>])
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\ads/sperrvermerk.tex"
+ierten Systeme\WB15Proj\documentation\ads/erklaerung.tex"
 LaTeX Font Info:    Try loading font information for T1+lmss on input line 5.
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmss.fd"
@@ -1562,124 +1555,48 @@ Package microtype Info: Loading generic settings for font family
 (microtype)             `lmss' (encoding: T1).
 (microtype)             For optimal results, create family-specific settings.
 (microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OMS+lmr on input line 17.
 
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
-File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+Underfull \hbox (badness 10000) in paragraph at lines 22--22
+
+ []
+
+) [1]
+Package tocbasic Info: character protrusion at toc deactivated on input line 58
+.
+
+("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
+ierten Systeme\WB15Proj\documentation\dokumentation.toc"
+LaTeX Font Info:    Try loading font information for OT1+lmr on input line 13.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
+File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 17.
+LaTeX Font Info:    Try loading font information for OML+lmm on input line 13.
+
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
+File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Try loading font information for OMS+lmsy on input line 13.
 
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omslmsy.fd"
 File: omslmsy.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
-LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <12> not available
-(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 17.
-) [1]
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\ads/erklaerung.tex"
-Underfull \hbox (badness 10000) in paragraph at lines 22--22
-
- []
-
-) [2]
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\ads/abstract.tex"
-LaTeX Font Info:    Try loading font information for T1+lmtt on input line 37.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
-File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-Package microtype Info: Loading generic settings for font family
-(microtype)             `lmtt' (encoding: T1).
-(microtype)             For optimal results, create family-specific settings.
-(microtype)             See the microtype manual for details.
-LaTeX Font Info:    Try loading font information for OT1+lmr on input line 37.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\ot1lmr.fd"
-File: ot1lmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Try loading font information for OML+lmm on input line 37.
-
-("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omllmm.fd"
-File: omllmm.fd 2009/10/30 v1.6 Font defs for Latin Modern
-)
-LaTeX Font Info:    Try loading font information for OMX+lmex on input line 37.
+LaTeX Font Info:    Try loading font information for OMX+lmex on input line 13.
 
 
 ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omxlmex.fd"
 File: omxlmex.fd 2009/10/30 v1.6 Font defs for Latin Modern
 )
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <12> on input line 37.
+(Font)              <12> on input line 13.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <8> on input line 37.
+(Font)              <8> on input line 13.
 LaTeX Font Info:    External font `lmex10' loaded for size
-(Font)              <6> on input line 37.
-
-Overfull \hbox (14.37169pt too wide) in paragraph at lines 37--37
-\T1/lmr/m/n/12 (-20) Abstract nor-ma-ler-wei-se auf Eng-lisch. Sie-he: [][]$\T1
-/lmtt/m/n/12 http : / / www . dhbw . de / fileadmin / user / public /$
- []
-
-
-Overfull \hbox (34.43356pt too wide) in paragraph at lines 37--37
-$\T1/lmtt/m/n/12 Dokumente / Portal / Richtlinien _ Praxismodule _ Studien _ un
-d _ Bachelorarbeiten _ JG2011ff .$
- []
-
-
-Overfull \hbox (46.0634pt too wide) in paragraph at lines 37--37
-\T1/lmr/m/n/12 (-20) Quelle: [][]$\T1/lmtt/m/n/12 http : / / www . ib . dhbw-[]
-mannheim . de / fileadmin / ms / bwl-[]ib / Downloads _ alt / Leitfaden _$
- []
-
-[3
-
-
-])
-Package tocbasic Info: character protrusion at toc deactivated on input line 58
-.
-
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\dokumentation.toc")
-\tf@toc=\write8
- [4
-
-]
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\ads/acronyms.tex"
-chapter without number
-
-Class scrreprt Warning: \float@addtolists detected!
-(scrreprt)              Implementation of \float@addtolist became
-(scrreprt)              deprecated in KOMA-Script v3.01 2008/11/14 and
-(scrreprt)              has been replaced by several more flexible
-(scrreprt)              features of package `tocbasic`.
-(scrreprt)              Since Version 3.12 support for deprecated
-(scrreprt)              \float@addtolist interface has been
-(scrreprt)              restricted to only some of the KOMA-Script
-(scrreprt)              features and been removed from others.
-(scrreprt)              Loading of package `scrhack' may help to
-(scrreprt)              avoid this warning, if you are using a
-(scrreprt)              a package that still implements the
-(scrreprt)              deprecated \float@addtolist interface .
-
-) [5
-
-
-
-
-]
-Package tocbasic Info: character protrusion at lof deactivated on input line 70
-.
-
-("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\dokumentation.lof")
-\tf@lof=\write9
- [6
-
-
+(Font)              <6> on input line 13.
+)
+\tf@toc=\write6
+ [2
 
 ]
 Package tocbasic Info: character protrusion at lot deactivated on input line 74
@@ -1687,8 +1604,9 @@ Package tocbasic Info: character protrusion at lot deactivated on input line 74
 
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
 ierten Systeme\WB15Proj\documentation\dokumentation.lot")
-\tf@lot=\write10
- [7
+\tf@lot=\write7
+ [3
+
 
 
 
@@ -1709,32 +1627,81 @@ Class scrreprt Warning: \float@listhead detected!
 
 chapter without number
 
+Class scrreprt Warning: \float@addtolists detected!
+(scrreprt)              Implementation of \float@addtolist became
+(scrreprt)              deprecated in KOMA-Script v3.01 2008/11/14 and
+(scrreprt)              has been replaced by several more flexible
+(scrreprt)              features of package `tocbasic`.
+(scrreprt)              Since Version 3.12 support for deprecated
+(scrreprt)              \float@addtolist interface has been
+(scrreprt)              restricted to only some of the KOMA-Script
+(scrreprt)              features and been removed from others.
+(scrreprt)              Loading of package `scrhack' may help to
+(scrreprt)              avoid this warning, if you are using a
+(scrreprt)              a package that still implements the
+(scrreprt)              deprecated \float@addtolist interface .
+
+
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
 ierten Systeme\WB15Proj\documentation\dokumentation.lol")
-\tf@lol=\write11
- [8
+\tf@lol=\write8
+ [4
 
 
 
 ]
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\content/einleitung.tex"
+ierten Systeme\WB15Proj\documentation\content/01einleitung.tex"
 chapter 1.
 )
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
-ierten Systeme\WB15Proj\documentation\content/aufbau.tex"pdfTeX warning (ext4):
- destination with the same identifier (name{page.1}) has been already used, dup
-licate ignored
+ierten Systeme\WB15Proj\documentation\content/02programmdesign.tex"pdfTeX warni
+ng (ext4): destination with the same identifier (name{page.1}) has been already
+ used, duplicate ignored
 <to be read again> 
                    \relax 
 l.1 \chapter
-            {Programmaufbau} [1
+            {Abbildung der Evidenzen} [1
 
 
 
 ]
 chapter 2.
-) [2
+LaTeX Font Info:    Try loading font information for T1+lmtt on input line 25.
+("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\t1lmtt.fd"
+File: t1lmtt.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+Package microtype Info: Loading generic settings for font family
+(microtype)             `lmtt' (encoding: T1).
+(microtype)             For optimal results, create family-specific settings.
+(microtype)             See the microtype manual for details.
+ [2
+
+]
+Overfull \hbox (0.9481pt too wide) in paragraph at lines 71--81
+[][] 
+ []
+
+
+Overfull \vbox (7.89444pt too high) has occurred while \output is active []
+
+
+[3]
+LaTeX Font Info:    Try loading font information for OMS+lmr on input line 95.
+ ("C:\Program Files (x86)\MiKTeX 2.9\tex\latex\lm\omslmr.fd"
+File: omslmr.fd 2009/10/30 v1.6 Font defs for Latin Modern
+)
+LaTeX Font Info:    Font shape `OMS/lmr/m/n' in size <12> not available
+(Font)              Font shape `OMS/lmsy/m/n' tried instead on input line 95.
+)
+("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
+ierten Systeme\WB15Proj\documentation\content/03programmaufbau.tex"
+Overfull \vbox (7.89444pt too high) has occurred while \output is active []
+
+
+[4]
+chapter 3.
+) [5
 
 ]
 
@@ -1745,7 +1712,7 @@ No file dokumentation.gls.
 Overfull \vbox (7.89444pt too high) has occurred while \output is active []
 
 
-[3
+[6
 
 
 
@@ -1753,7 +1720,7 @@ Overfull \vbox (7.89444pt too high) has occurred while \output is active []
 ("C:\Users\kuscum\Documents\Studium\DHBW Theoriesemester\5. Semester\Wissensbas
 ierten Systeme\WB15Proj\documentation\ads/appendix.tex"
 chapter without number
-[4
+[7
 
 
 ])
@@ -1762,7 +1729,7 @@ No complaints by nag.
 Overfull \vbox (7.89444pt too high) has occurred while \output is active []
 
 
-[5]
+[8]
 Package atveryend Info: Empty hook `BeforeClearDocument' on input line 104.
 Package atveryend Info: Empty hook `AfterLastShipout' on input line 104.
 
@@ -1773,26 +1740,30 @@ Package atveryend Info: Empty hook `AtEndAfterFileList' on input line 104.
 Package logreq Info: Writing requests to 'dokumentation.run.xml'.
  ) 
 Here is how much of TeX's memory you used:
- 30142 strings out of 493921
- 516180 string characters out of 3144873
- 1139424 words of memory out of 3000000
- 32750 multiletter control sequences out of 15000+200000
- 62113 words of font info for 65 fonts, out of 3000000 for 9000
+ 30083 strings out of 493921
+ 514199 string characters out of 3144873
+ 1141865 words of memory out of 3000000
+ 32696 multiletter control sequences out of 15000+200000
+ 67726 words of font info for 66 fonts, out of 3000000 for 9000
  845 hyphenation exceptions out of 8191
- 59i,10n,80p,2106b,1662s stack positions out of 5000i,500n,10000p,200000b,50000s
+ 59i,10n,80p,2106b,1693s stack positions out of 5000i,500n,10000p,200000b,50000s
 {C:/Program Files (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-ec.enc}{C:/Program F
-iles (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-mathsy.enc}<C:/Program Files (x86)/
-MiKTeX 2.9/fonts/type1/public/lm/lmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/
-fonts/type1/public/lm/lmr12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/
-public/lm/lmr17.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lm
-ri12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmri8.pfb><C:
-/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmro12.pfb><C:/Program Fi
-les (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Program Files (x86)
-/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files (x86)/MiKTeX 2.9
-/fonts/type1/public/lm/lmtt12.pfb>
-Output written on dokumentation.pdf (14 pages, 258088 bytes).
+iles (x86)/MiKTeX 2.9/fonts/enc/dvips/lm/lm-rm.enc}{C:/Program Files (x86)/MiKT
+eX 2.9/fonts/enc/dvips/lm/lm-mathit.enc}{C:/Program Files (x86)/MiKTeX 2.9/font
+s/enc/dvips/lm/lm-mathsy.enc}<C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/pub
+lic/lm/lmbx12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmmi
+12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr10.pfb><C:/P
+rogram Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr12.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmr17.pfb><C:/Program Files (x86)/MiKTe
+X 2.9/fonts/type1/public/lm/lmr8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/t
+ype1/public/lm/lmri12.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public
+/lm/lmri8.pfb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmro12.p
+fb><C:/Program Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmssbx10.pfb><C:/Pr
+ogram Files (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmsy10.pfb><C:/Program Files
+ (x86)/MiKTeX 2.9/fonts/type1/public/lm/lmtt12.pfb>
+Output written on dokumentation.pdf (13 pages, 312559 bytes).
 PDF statistics:
- 175 PDF objects out of 1000 (max. 8388607)
- 37 named destinations out of 1000 (max. 500000)
- 18499 words of extra memory for PDF output out of 20736 (max. 10000000)
+ 213 PDF objects out of 1000 (max. 8388607)
+ 45 named destinations out of 1000 (max. 500000)
+ 21099 words of extra memory for PDF output out of 24883 (max. 10000000)
 

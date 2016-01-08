@@ -1,0 +1,101 @@
+\chapter{Abbildung der Evidenzen}
+Dieses Kapitel befasst sich mit der Zuordnung jeder Emotion und dessen Attribute. Vorerst wird diese Zuordnung der Aufgabenstellung gemäß dargestellt. Daraufhin werden die Werte der Beispieldaten näher betrachtet und zuvor vorgestellte Zuordnung der Emotionen konkretisiert. 
+
+\section{Emotionen}
+
+%Durch Inferenz und der Dempster Regel wird zu einer Emotion geschlossen.
+Aus der Aufgabenstellung geht folgende Einstufung jeder Emotion hervor:
+
+\begin{table}[h]
+\begin{tabular}{ l | c | c | c | c}
+  Emotion & Kürzel & Sprechgeschwindigkeit & Tonlage & Schallstärke \\
+  \hline 
+  Angst & A & Schnell & Hoch & - \\
+  Überraschung & U & Schnell & Hoch & Hoch \\
+  Wut & W & Schnell & Hoch & Hoch \\
+  Freude & F & Schnell / Langsam & Hoch & Hoch \\
+  Ekel & E & Langsam & Tief & Schwach \\
+  Traurigkeit & T & Langsam & Tief & Schwach \\
+\end{tabular}
+\caption{Abbildung der Emotionen}
+\label{tab:emotionenAbbildung}
+\end{table}
+
+\section{Nutzung der Beispieldaten}
+Das Projekt benutzt die Beispielwerte aus den Dateien \verb|E_004.csv| und \verb|E_004b.csv|. In beiden Dateien sind jeweils 50 Takte angegeben. Das bedeutet, dass das Programm bei Durchführung, 50 Emotionen als Ergebnis ausgeben sollte.
+
+
+Es gibt dabei jeweils immer drei Evidenzen, welche entstehen. In der Aufgabenstellung geht zwar hervor, dass jeweils immer nur 3 Levels von Ausprägungen der jeweiligen Evidenz erkannt werden muss (so wie oben in der Tabelle gekennzeichnet), jedoch sind in den Beispieldaten in der Tonlage und in der Schallstärke weitere Ausprägungen zu finden. Die folgende Liste enthält jegliche Ausprägung, die in den Beispielwerten vorkommt. 
+\begin{description}
+  \item [Sprechgeschwindigkeit in Silben/Sekunden] langsam, normal, schnell
+  \item [Durchnschnittliche Tonlage] sehr niedrig, niedrig, normal, hoch, sehr hoch
+  \item [Schallstärke] sehr niedrig, niedrig, normal, hoch, sehr hoch
+\end{description}
+
+Der verbleibende Teil dieses Kapitels befasst sich mit der Nutzung und Einteilung der Beispieldaten.
+
+\subsection{Sprechgeschwindigkeit}
+Nach einer Analyse der Werte der Sprechgeschwindigkeit ist festgestellt worden, dass die Werte in beiden Dateiein von 2 bis 6 variieren. Die folgende Tabelle stellt die Analyse kurz dar. 
+
+\begin{table}[h]
+\begin{tabular}{ c | c | c | c}
+  Dateiname & Minimum & Maximum & Durchschnitt \\
+  \hline 
+  \verb|E_004.csv|  & 2.6 & 5.9 & 4 \\
+  \verb|E_004b.csv| & 2.9 & 6.5 & 4.442 \\
+\end{tabular}
+\caption{Ausprägung der Sprechgeschwindigkeit}
+\label{tab:sprechgeschwdingikeit}
+\end{table}
+
+Dadurch wurde folgende Norm für die Ausprägung der Sprechgeschwindigkeit aufgestellt, welche für beide Beispieldaten gilt:
+\begin{description}
+  \item [langsam] Der Wert ist kleiner als 2.5
+  \item [normal] Der Wert liegt im Intervall: 2.6 - 5.5
+  \item [schnell] Der Wert ist größer als 5.6
+\end{description}
+
+\subsection{Durchschnittliche Tonlage und Schallstärke}
+Die Ausprägung für die Schallstärke und die durchschnittliche Tonlage wird wie folgt zusammengefasst:
+\begin{description}
+\item [niedrig] falls sehr niedrig oder niedrig
+\item [normal] falls normal
+\item [hoch] falls hoch oder sehr hoch
+\end{description}
+
+\section{Konkretisierung der Emotionen}
+Da nun weitere Ausprägungen durch die Beispieldaten dazugekommen sind, ist es notwendig, die Zuordnung der Emotionen zu konkretisieren. Die folgende Tabelle \ref{tab:konkretisierteEmotionen} stellt die finale Zuordnung der Emotionen dar. Änderungen sind mit fetter Schrift makiert.
+
+
+\begin{table}[h]
+\begin{tabular}{ l | c | c | c}
+  Emotion & Sprechgeschwindigkeit & Tonlage & Schallstärke \\
+  \hline 
+  Angst A & Schnell & Hoch & \textbf{Hoch} \\
+  Überraschung U & Schnell & Hoch & Hoch \\
+  Wut W & \textbf{Normal}/Schnell & Hoch & Hoch \\
+  Freude F & Langsam/\textbf{Normal}/Schnell & \textbf{Normal}/Hoch &\textbf{Normal}/Hoch\\
+  Ekel E & Langsam & Tief & Schwach \\
+  Traurigkeit T & Langsam & Tief & Schwach \\
+\end{tabular}
+\caption{Konkretisierung der Emotionen}
+\label{tab:konkretisierteEmotionen}
+\end{table}
+
+
+\section{Ergebnisauswertung}
+Durch Akkumulation der Evidenzen führt das Programm zu einer Schlussfolgerung. Es wird die Emotion ausgewählt, dessen Plausabilität am höchsten ist. Da beide Dateien jeweils 50 Takte beinhalten, werden 50 Emotionen ausgewählt.
+
+
+
+Dabei geben die Messwerte keine Angaben zu der Zuverlässigkeit der Messung, diese werden daher zufällig bestimmt. Es verbleibt dadurch eine bestimmte Unsicherheit. 
+
+\section{Beispiel Sprechgeschwindigkeit}
+\begin{itemize}
+  \item Schnelles Sprechen: \(m_1\)({A, U, W, F}) = 0.8
+  \item Langsames Sprechen: \(m_2\)({E}) = 0.8
+\end{itemize}
+
+\section{Tonlage}
+
+
