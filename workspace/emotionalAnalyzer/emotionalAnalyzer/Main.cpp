@@ -234,6 +234,10 @@ void dempster(vector<string> data){
 			m_12a.value *= k;
 			m_12b.value *= k;
 			m_12c.value *= k;
+
+			//m_12d is an empty set and not relevant anymore
+			m_12.push_back(m_12a);
+
 		}
 		
 		cout << "dont stop " << endl;
