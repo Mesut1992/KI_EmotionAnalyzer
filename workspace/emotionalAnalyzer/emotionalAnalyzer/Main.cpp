@@ -9,6 +9,8 @@
 #include <algorithm>
 #include <cstdlib>
 #include <set>
+#include <map>
+
 using namespace std;
 
 //#include "dempster.h" //contains the core functionality - some features are called from this file!
@@ -24,8 +26,11 @@ double toDouble(string s); //converts string with comma to double
 set<string> getEmotionOfSprechgeschwindigkeit(double value); //Get Emotions
 //uses dempster to find the emotion with the max. plausibility
 void dempster(vector<string> data);
+struct Evidenz;
+void plausability(vector<Evidenz> data); //calculates the plausability from a range of evidenzes
 
-//Implementation
+
+
 void printFile(string filename){
 	ifstream file(filename);
 	string value;
@@ -156,12 +161,12 @@ set<string> getEmotionOfSchallstaerke(string value){
 
 //TODO
 //Everything from here should be extracted to another file "dempster.h"
-struct root_evidenz
+struct Evidenz
 {
+	Evidenz(){} //to add dynamically elements to a vector 
 	set<string> emotions;
 	double value = 0.0;
 };
-
 
 void dempster(vector<string> data){
 	/*1st element*/
@@ -171,15 +176,15 @@ void dempster(vector<string> data){
 		cout << "Takt: " << data[i] << endl;
 		//Init der evidenzen
 		//Sprechgeschwindigkeit
-		vector<root_evidenz*> m_1;
-		root_evidenz m_1a;
-		root_evidenz m_1b;
-		vector<root_evidenz*> m_2;
-		root_evidenz m_2a;
-		root_evidenz m_2b;
-		vector<root_evidenz*> m_3;
-		root_evidenz m_3a;
-		root_evidenz m_3b;
+		vector<Evidenz*> m_1;
+		Evidenz m_1a;
+		Evidenz m_1b;
+		vector<Evidenz*> m_2;
+		Evidenz m_2a;
+		Evidenz m_2b;
+		vector<Evidenz*> m_3;
+		Evidenz m_3a;
+		Evidenz m_3b;
 		m_1a.emotions = getEmotionOfSprechgeschwindigkeit(toDouble(data[i + 1]));
 		m_1a.value = KONF_SPRECHGESCHWINDIGKEIT;
 		m_1b.emotions = omega;
@@ -197,52 +202,111 @@ void dempster(vector<string> data){
 		m_3a.emotions = getEmotionOfSchallstaerke(data[i + 3]);
 		m_3a.value = KONF_SCHALLSTAERKE;
 		m_3b.emotions = omega;
-		m_3b.value = (1 - m_3b.value);
+		m_3b.value = (1 - m_3a.value);
 		m_3.push_back(&m_3a); 
 		m_3.push_back(&m_3b); //OMEGA - index 1
 
 		//m_1 union m_2
-		vector<root_evidenz> m_12;
-		
+		vector<Evidenz*> m_12;
+
 		//omega u omega
-		root_evidenz m_12a;
+		Evidenz m_12a;
 		//m_12a.emotions = omega;
 		m_12a.value = m_1[1]->value * m_2[1]->value;
 		set_intersection(m_1[1]->emotions.begin(), m_1[1]->emotions.end(), m_2[1]->emotions.begin(), m_2[1]->emotions.end(), inserter(m_12a.emotions, m_12a.emotions.begin()));
 		
 		//omega u m_2-emotions
-		root_evidenz m_12b;
+		Evidenz m_12b;
 		m_12b.value = m_1[1]->value * m_2[0]->value;
 		//Omega with something is always something, so this could be reduced. Didn't optimized it for clearity purposes
 		set_intersection(m_1[1]->emotions.begin(), m_1[1]->emotions.end(), m_2[0]->emotions.begin(), m_2[0]->emotions.end(), inserter(m_12b.emotions, m_12b.emotions.begin()));
 
 		//m_1-emotions u omega
-		root_evidenz m_12c;
+		Evidenz m_12c;
 		m_12c.value = m_1[0]->value * m_2[1]->value;
 		set_intersection(m_1[0]->emotions.begin(), m_1[0]->emotions.end(), m_2[1]->emotions.begin(), m_2[1]->emotions.end(), inserter(m_12c.emotions, m_12c.emotions.begin()));
 
 		//m_1-emotions u m_2-emotions
 		//only case in which a 'Korrektur' need to be considered
-		root_evidenz m_12d;
+		Evidenz m_12d;
 		m_12d.value = m_1[0]->value * m_2[0]->value;
 		set_intersection(m_1[0]->emotions.begin(), m_1[0]->emotions.end(), m_2[0]->emotions.begin(), m_2[0]->emotions.end(), inserter(m_12d.emotions, m_12d.emotions.begin()));
 		
-		//Korrektur
+		m_12.push_back(&m_12a); //OMEGA
+		m_12.push_back(&m_12b); //m_2-emotions
+		m_12.push_back(&m_12c); //m_1-emotions
+
+		//Korrektur?
 		if (m_12d.emotions.empty()){
 			//cout << "Oh dear, there is no intersection!" << endl;
 			double k = 1 / (1 - m_12d.value);
-			m_12a.value *= k;
-			m_12b.value *= k;
-			m_12c.value *= k;
-
+			m_12[0]->value *= k;
+			m_12[1]->value *= k;
+			m_12[2]->value *= k;
 			//m_12d is an empty set and not relevant anymore
-			m_12.push_back(m_12a);
-
 		}
-		
-		cout << "dont stop " << endl;
+		else{
+			//keine Korrektur notwendig
+			m_12.push_back(&m_12d); //intersection aus m_1 und m_2 emotions
+		}
+
+		//m12 union m3 
+		vector<Evidenz> m_123; //call by copy required here - because the variables are created in a loop dynamically - do not save only pointers in this vector
+		int counter = 0;
+
+		for (size_t i = 0; i < m_12.size(); i++)
+		{
+			for (size_t j = 0; j < m_3.size(); j++)
+			{
+				Evidenz temp; //empty element
+				temp.value = (m_12[i]->value) * (m_3[j]->value);
+				set_intersection(m_12[i]->emotions.begin(), m_12[i]->emotions.end(), m_3[j]->emotions.begin(), m_3[j]->emotions.end(), inserter(temp.emotions, temp.emotions.begin()));
+				m_123.push_back(temp);
+			}
+		}
+
+		//Print plausability
+		plausability(m_123);
+		std::cout << endl;
 	}
 };
+
+void plausability(vector<Evidenz> data){
+	std::cout << "Plausabilitaet" << endl;
+	map<string, double> pi; 
+	//init
+	for (const auto& emotion : omega) {
+		pi[emotion] = 0.0;
+	}
+	pi["max"] = 0.0;
+
+	for (size_t i = 0; i < data.size(); i++)
+	{
+		//for each emotion
+		for (const auto& emotion : omega) {
+			if (data[i].emotions.find(emotion) != data[i].emotions.end()){
+				//found element
+				pi[emotion] += data[i].value;
+			}
+		}
+	}
+	//print
+	string e;
+	bool init = false;
+	for (const auto& emotion : omega) {
+		if (init == false){
+			init = true;
+			pi["max"] = pi[emotion];
+			e = emotion;
+		}
+		if (pi["max"] < pi[emotion]){
+			pi["max"] = pi[emotion];
+			e = emotion;
+		}
+		std::cout << "PI for Emotion: " << emotion << " : " << pi[emotion] << " " << endl;
+	}
+	std::cout << "Max PI found in Emotion: " << e << " : " << pi["max"] << endl;
+}
 
 int main(){
 	global_init();
@@ -269,7 +333,7 @@ int main(){
 
 	//Goes through set and finds each element
 	for (const auto& elem : test) {
-		cout << elem << endl;
+		std::cout << elem << endl;
 	}
 	//DELETE TILL HERE
 
