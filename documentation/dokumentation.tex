@@ -13,8 +13,8 @@
 
 \input{ads/header}
 
-\makeglossaries
-\input{ads/glossary}
+%\makeglossaries
+%\input{ads/glossary}
 
 \begin{document}
 
@@ -27,16 +27,16 @@
 	\pagenumbering{Roman}
 
 	% Sperrvermerk
-	\input{ads/sperrvermerk}
-	\newpage
+	%\input{ads/sperrvermerk}
+	%\newpage
 
 	% Erklärung
 	\input{ads/erklaerung}
 	\newpage
 
 	% Abstract
-	\input{ads/abstract}
-	\newpage
+	%\input{ads/abstract}
+	%\newpage
 
 	\pagestyle{plain}		% nur Seitenzahlen im Fuß
 	
@@ -62,12 +62,12 @@
 	\newpage
 
 	% Abkürzungsverzeichnis
-	\cleardoublepage
-	\input{ads/acronyms}
+	%\cleardoublepage
+	%\input{ads/acronyms}
 
 	% Abbildungsverzeichnis
-	\cleardoublepage
-	\listoffigures
+	%\cleardoublepage
+	%\listoffigures
 
 	%Tabellenverzeichnis
 	\cleardoublepage
@@ -83,9 +83,9 @@
 	\pagestyle{headings}		% Kolumnentitel im Kopf, Seitenzahlen im Fuß
 
 	% Inhalt
-	\input{content/einleitung.tex}
-	\input{content/aufbau.tex}
-		
+	\input{content/01einleitung}
+	\input{content/02programmdesign}
+	\input{content/03implementierung}
 
 	\clearpage
 
