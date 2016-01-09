@@ -169,13 +169,10 @@ struct Evidenz
 };
 
 void dempster(vector<string> data){
-	/*1st element*/
-	size_t takt = 0;
 	for (size_t i = STARTOFDATA; i < data.size(); i = i + 4)
 	{
 		cout << "Takt: " << data[i] << endl;
 		//Init der evidenzen
-		//Sprechgeschwindigkeit
 		vector<Evidenz*> m_1;
 		Evidenz m_1a;
 		Evidenz m_1b;
@@ -189,7 +186,7 @@ void dempster(vector<string> data){
 		m_1a.value = KONF_SPRECHGESCHWINDIGKEIT;
 		m_1b.emotions = omega;
 		m_1b.value = (1 - m_1a.value);
-		m_1.push_back(&m_1a); //Emotions
+		m_1.push_back(&m_1a); 
 		m_1.push_back(&m_1b); //OMEGA - index 1
 
 		m_2a.emotions = getEmotionOfTonlage(data[i + 2]);
@@ -207,63 +204,75 @@ void dempster(vector<string> data){
 		m_3.push_back(&m_3b); //OMEGA - index 1
 
 		//m_1 union m_2
-		vector<Evidenz*> m_12;
+		vector<Evidenz> m_12; //Call by copy required - variables are set by lower scope (for loop)
 
-		//omega u omega
-		Evidenz m_12a;
-		//m_12a.emotions = omega;
-		m_12a.value = m_1[1]->value * m_2[1]->value;
-		set_intersection(m_1[1]->emotions.begin(), m_1[1]->emotions.end(), m_2[1]->emotions.begin(), m_2[1]->emotions.end(), inserter(m_12a.emotions, m_12a.emotions.begin()));
-		
-		//omega u m_2-emotions
-		Evidenz m_12b;
-		m_12b.value = m_1[1]->value * m_2[0]->value;
-		//Omega with something is always something, so this could be reduced. Didn't optimized it for clearity purposes
-		set_intersection(m_1[1]->emotions.begin(), m_1[1]->emotions.end(), m_2[0]->emotions.begin(), m_2[0]->emotions.end(), inserter(m_12b.emotions, m_12b.emotions.begin()));
-
-		//m_1-emotions u omega
-		Evidenz m_12c;
-		m_12c.value = m_1[0]->value * m_2[1]->value;
-		set_intersection(m_1[0]->emotions.begin(), m_1[0]->emotions.end(), m_2[1]->emotions.begin(), m_2[1]->emotions.end(), inserter(m_12c.emotions, m_12c.emotions.begin()));
-
-		//m_1-emotions u m_2-emotions
-		//only case in which a 'Korrektur' need to be considered
-		Evidenz m_12d;
-		m_12d.value = m_1[0]->value * m_2[0]->value;
-		set_intersection(m_1[0]->emotions.begin(), m_1[0]->emotions.end(), m_2[0]->emotions.begin(), m_2[0]->emotions.end(), inserter(m_12d.emotions, m_12d.emotions.begin()));
-		
-		m_12.push_back(&m_12a); //OMEGA
-		m_12.push_back(&m_12b); //m_2-emotions
-		m_12.push_back(&m_12c); //m_1-emotions
-
-		//Korrektur?
-		if (m_12d.emotions.empty()){
-			//cout << "Oh dear, there is no intersection!" << endl;
-			double k = 1 / (1 - m_12d.value);
-			m_12[0]->value *= k;
-			m_12[1]->value *= k;
-			m_12[2]->value *= k;
-			//m_12d is an empty set and not relevant anymore
+		for (size_t i = 0; i < m_1.size(); i++)
+		{
+			for (size_t j = 0; j < m_2.size(); j++)
+			{
+				Evidenz temp;
+				temp.value = m_1[i]->value * m_2[j]->value;
+				set_intersection(m_1[i]->emotions.begin(), m_1[i]->emotions.end(), m_2[j]->emotions.begin(), m_2[j]->emotions.end(), inserter(temp.emotions, temp.emotions.begin()));
+				m_12.push_back(temp);
+			}
 		}
-		else{
-			//keine Korrektur notwendig
-			m_12.push_back(&m_12d); //intersection aus m_1 und m_2 emotions
+
+		//Korrektur? - Hier ist es nur möglich, dass nur eine Evidenz eine Korrektur benötigt
+		for (size_t i = 0; i < m_12.size(); i++)
+		{
+			if (m_12[i].emotions.empty()){
+				cout << "Hinweis: Korrektur in der Union von m_1 und m_2 durchgefuehrt." << endl;
+				double k = 1 / (1 - m_12[i].value);
+				m_12.erase(m_12.begin() + i); //delete element
+				for (size_t a = 0; a < m_12.size(); a++)
+				{
+					m_12[a].value *= k;
+				}
+				break; //leave for loop since there can only be one 'Korrektur'
+			}
 		}
 
 		//m12 union m3 
 		vector<Evidenz> m_123; //call by copy required here - because the variables are created in a loop dynamically - do not save only pointers in this vector
-		int counter = 0;
+		//int counter = 0;
 
 		for (size_t i = 0; i < m_12.size(); i++)
 		{
 			for (size_t j = 0; j < m_3.size(); j++)
 			{
 				Evidenz temp; //empty element
-				temp.value = (m_12[i]->value) * (m_3[j]->value);
-				set_intersection(m_12[i]->emotions.begin(), m_12[i]->emotions.end(), m_3[j]->emotions.begin(), m_3[j]->emotions.end(), inserter(temp.emotions, temp.emotions.begin()));
+				temp.value = (m_12[i].value) * (m_3[j]->value);
+				set_intersection(m_12[i].emotions.begin(), m_12[i].emotions.end(), m_3[j]->emotions.begin(), m_3[j]->emotions.end(), inserter(temp.emotions, temp.emotions.begin()));
 				m_123.push_back(temp);
 			}
 		}
+
+		//Korrektur? Hier können mehrere entstehen!
+		bool korrektur = false;
+		double temp = 0.0;
+		vector<int> index_to_delete;
+		for (size_t k = 0; k < m_123.size(); k++)
+		{
+			if (m_123[k].emotions.empty()){
+				cout << "Hinweis: Korrektur in der Union von m_12 und m_3 durchgeführt! " << endl;
+				korrektur = true;
+				temp += m_123[k].value; 
+				index_to_delete.push_back(k); //remember which element needs to be removed
+			}
+		}
+		if (korrektur){
+			double k = 1 / (1 - temp);
+			//delete elements
+			for (size_t b = 0; b < index_to_delete.size(); b++)
+			{
+				m_123.erase(m_123.begin() + index_to_delete[b]);
+			}
+			for (size_t a = 0; a < m_123.size(); a++)
+			{
+				m_123[a].value *= k;
+			}
+		}
+
 
 		//Print plausability
 		plausability(m_123);
