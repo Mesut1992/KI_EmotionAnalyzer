@@ -15,6 +15,13 @@
 
 #define DATA_START 4 //the data starts at element of 4, or index 4 (to skip header)
 
+// Definitions for Output File
+#define CSV_SEP ';'
+#define CSV_ENDL '\n'
+#define HEAD_CLK "Takt"
+#define HEAD_MAX "Max"
+#define HEAD_MAXVAL "PL of Max"
+ 
 // Definitions of Emotions
 #define FEAR "A" // Angst
 #define SURPRISE "U" // Ueberraschung
@@ -42,13 +49,6 @@
 
 // Definitions for Plausibility
 #define PL_MAX "max"
-
-// Definitions for Output File
-#define CSV_SEP ';'
-#define CSV_ENDL '\n'
-#define HEAD_CLK "Takt"
-#define HEAD_MAX "Max"
-#define HEAD_MAXVAL "PL of Max"
 
 namespace std {
 
