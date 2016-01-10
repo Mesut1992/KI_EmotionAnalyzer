@@ -17,4 +17,5 @@ dokumentation.pdf
 *.run.xml
 *.synctex.gz
 *.toc
+*.lot
 latexmkrc
