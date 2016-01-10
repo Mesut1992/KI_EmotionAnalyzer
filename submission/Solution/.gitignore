@@ -1,0 +1,4 @@
+*.sfd
+*.opensdf
+Debug/
+.vs/
