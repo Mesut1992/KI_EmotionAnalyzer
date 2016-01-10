@@ -38,7 +38,7 @@ Im zweiten Teil können die Konfidenzwerte (die Gewichtung der Evidenzen) festge
 Im dritten Teil sind jegliche Werte der Ausprägungen festgelegt. Beispielsweise kann hier festgelegt werden, welcher Wert für den unteren Teil der Sprechgeschwindigkeit ausschlaggebend ist (Kapitel \ref{sprechgeschwindigkeit_auspr}) und wie die Ausprägungen der Merkmale in den vorgegeben Daten gespeichert sind.
 
 \section{dempster.h}
-In dieser Datei sind alle unmittelbar mit der Evidenzberechnung zusammenhängenden Funktionen zu finden. Die \textit{Dempster}-Funktion erwartet alle Evidenzen (\(m_1\), \(m_2\) und \(m_3\)) mit Gewichtung und akkumuliert sie zur finalen Evidenz \(m_(123)\). Des Weiteren beinhaltet sie eine Funktion zur Berechnung der \textit{Plausibilitäten}.
+In dieser Datei sind alle unmittelbar mit der Evidenzberechnung zusammenhängenden Funktionen zu finden. Die \textit{Dempster}-Funktion erwartet alle Evidenzen (\(m_1\), \(m_2\) und \(m_3\)) mit Gewichtung und akkumuliert sie zur finalen Evidenz \(m_{123}\). Des Weiteren beinhaltet sie eine Funktion zur Berechnung der \textit{Plausibilitäten}.
 
 Zur Berechnung der Evidenzen wird das folgende Strukt benutzt:
 
@@ -60,7 +60,7 @@ Entscheidend sind hier das Set und der double-Wert. \textit{Evidence.emotions} b
 \label{diagramm_evidenzen}
 \end{figure}
 
-In der \textit{Dempster}-Funktion wird zuerst aus \(m_1\) und \(m_2\) die Evidenz \(m_(12)\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_{12}\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert. Durch Akkumulation von \(m_{12}\) und \(m_3\) entsteht auf gleichem Wege \(m_{123}\), und die resultierenden Mengen werden auf Konflikte untersucht, diese gegebenenfalls gelöscht und der Rest korrigiert. Die Funktion wird einmal pro Takt aufgerufen.
+In der \textit{Dempster}-Funktion wird zuerst aus \(m_1\) und \(m_2\) die Evidenz \(m_{12}\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_{12}\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert. Durch Akkumulation von \(m_{12}\) und \(m_3\) entsteht auf gleichem Wege \(m_{123}\), und die resultierenden Mengen werden auf Konflikte untersucht, diese gegebenenfalls gelöscht und der Rest korrigiert. Die Funktion wird einmal pro Takt aufgerufen.
  
 Die Plausibilitätsberechnung geschieht in der Funktion \verb|plausibility()|. Als Eingabeparameter wird hier die Evidenz \(m_{123}\) erwartet. Durch Iterieren über alle Teilevidenzen werden für jede Emotion die Teilwerte aufsummiert und in einen neuen Vektor gespeichert. Anschließend wird die größte Plausibilität gesucht und zusätzlich abgespeichert.
  
