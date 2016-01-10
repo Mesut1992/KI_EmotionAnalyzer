@@ -7,3 +7,14 @@ dokumentation.pdf
 *.backup
 *.bak
 *.orig
+*.aux
+*.bcf
+*.glo
+*.ist
+*.lof
+*.log
+*.lol
+*.run.xml
+*.synctex.gz
+*.toc
+latexmkrc
