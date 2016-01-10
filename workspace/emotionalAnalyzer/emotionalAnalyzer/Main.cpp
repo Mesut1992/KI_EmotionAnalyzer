@@ -273,7 +273,6 @@ void dempster(vector<string> data){
 			}
 		}
 
-
 		//Print plausability
 		plausability(m_123);
 		std::cout << endl;
@@ -336,7 +335,7 @@ int main(){
 	dempster(file1);
 	
 	//TEST - DEBUG DELETE LATER
-	set<string> test=  getEmotionOfSprechgeschwindigkeit(toDouble(file1[5]));
+	set<string> test = getEmotionOfSprechgeschwindigkeit(toDouble(file1[5]));
 	set<string> test2 = (getEmotionOfTonlage(file1[6]));
 	set<string> test3 = (getEmotionOfSchallstaerke(file1[7]));
 
@@ -344,9 +343,8 @@ int main(){
 	for (const auto& elem : test) {
 		std::cout << elem << endl;
 	}
-	//DELETE TILL HERE
 
+	//DELETE TILL HERE
 	char dontstopPrgm = getchar();
 	return 0;
 }
-
