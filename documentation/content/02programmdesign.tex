@@ -1,8 +1,8 @@
 \chapter{Abbildung der Evidenzen}
-Dieses Kapitel befasst sich mit der Zuordnung jeder Emotion und dessen Attribute. Vorerst wird diese Zuordnung der Aufgabenstellung gemäß dargestellt. Daraufhin werden die Werte der Beispieldaten näher betrachtet und die zuvor vorgestellte Zuordnung der Emotionen, konkretisiert. 
+Dieses Kapitel befasst sich mit der Zuordnung jeder Emotion und deren Attribute. Vorerst wird diese Zuordnung der Aufgabenstellung gemäß dargestellt. Daraufhin werden die Werte der Beispieldaten näher betrachtet und die zuvor vorgestellte Zuordnung der Emotionen konkretisiert. 
 
 \section{Emotionen}
-Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus der Aufgabenstellung dar. Dabei fällt auf, dass die Schallstärke nicht ausschlaggebend für die Emotion \textit{Angst} und das die Sprechgeschwindigkeit nicht auf Traurigkeit zutreffend ist. Außerdem fällt auf, dass keine Mittelstufe in den Ausprägungen der Merkmale existiert.
+Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus der Aufgabenstellung dar. Hierbei fällt auf, dass die Schallstärke nicht ausschlaggebend für die Emotion \textit{Angst} ist und die Sprechgeschwindigkeit keinen Einfluss auf \textit{Traurigkeit} hat. Außerdem fällt auf, dass keine Mittelstufe in den Ausprägungen der Merkmale existiert.
 
 \begin{table}[h]
 \begin{tabular}{ l | c | c | c | c}
@@ -21,10 +21,8 @@ Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus
 
 \section{Nutzung der Beispieldaten}
 Das Projekt benutzt die Beispielwerte aus den Dateien \verb|E_004.csv| und \verb|E_004b.csv|. In beiden Dateien sind jeweils 50 Takte angegeben, die zu analysieren sind. 
-%Das bedeutet, dass das Programm bei Durchführung, 50 Emotionen als Ergebnis ausgeben sollte.
 
-
-Es gibt dabei jeweils immer drei Evidenzen, die in jedem Takt, entstehen. In der Aufgabenstellung geht zwar hervor, dass jeweils immer nur 3 Levels von Ausprägungen der jeweiligen Evidenz erkannt werden muss (so wie oben in der Tabelle gekennzeichnet), jedoch sind in den Beispieldaten in der Tonlage und in der Schallstärke weitere Ausprägungen zu finden. Die folgende Liste enthält alle Ausprägungen der Merkmale, die in den Beispieldaten zu finden sind. 
+In jedem Takt entstehen jeweils drei Evidenzen. In der Aufgabenstellung geht zwar hervor, dass jeweils immer nur 3 Levels (wenig, normal, viel) von Ausprägungen der jeweiligen Evidenz erkannt werden muss (so wie oben in der Tabelle gekennzeichnet), jedoch sind in den Beispieldaten in der Tonlage und in der Schallstärke weitere Ausprägungen zu finden (sehr wenig, sehr viel). Die folgende Liste enthält alle Ausprägungen der Merkmale, die in den Beispieldaten zu finden sind. 
 
 \begin{description}
   \item [Sprechgeschwindigkeit in Silben/Sekunden] langsam, normal, schnell
@@ -32,18 +30,18 @@ Es gibt dabei jeweils immer drei Evidenzen, die in jedem Takt, entstehen. In der
   \item [Schallstärke] sehr niedrig, niedrig, normal, hoch, sehr hoch
 \end{description}
 
-Da die Anzahl der Ausprägungen in den Beispieldaten größer ist, als in der Aufgabenstellung, befasst sich der verbleibende Teil dieses Kapitels mit der Nutzung und Einteilung der Beispieldaten.
+Da die Anzahl der Ausprägungen in den Beispieldaten größer ist als in der Aufgabenstellung, befasst sich der verbleibende Teil dieses Kapitels mit der Nutzung und Einteilung der Beispieldaten.
 
 \section{Normierung der Ausprägungen der Merkmale}
-Jegliche Normierungen sind über eine externe Settingsdatei statisch festgelegt. Diese können, unabhängig vom Programmcode, vor Programmstart angepasst werden. Der Programmaufbau wird im nächsten Kapitel näher betrachtet.
+Jegliche Normierungen sind über eine externe Einstellungsdatei statisch festgelegt. Diese können, unabhängig vom Programmcode, vor Programmstart angepasst werden. Der Programmaufbau wird im nächsten Kapitel näher betrachtet.
 
 \subsection{Sprechgeschwindigkeit}
 \label{sprechgeschwindigkeit_auspr}
-Nach einer Analyse der Werte der Sprechgeschwindigkeit ist festgestellt worden, dass die Werte in beiden Dateiein von 2 bis 7 variieren. Die folgende Tabelle \ref{tab:sprechgeschwdingikeit} stellt die Analyse dar. 
+Nach einer Analyse der Werte der Sprechgeschwindigkeit ist festgestellt worden, dass die Werte in beiden Dateien zwischen 2 und 7 variieren. Die folgende Tabelle \ref{tab:sprechgeschwdingikeit} stellt die Analyse dar. 
 
 \begin{table}[h]
 \begin{tabular}{ c | c | c | c}
-  Dateiname & Minimum & Maximum & Durchschnitt \\
+  Dateiname & Minimum & Maximum & Mittelwert \\
   \hline 
   \verb|E_004.csv|  & 2.6 & 5.9 & 4 \\
   \verb|E_004b.csv| & 2.9 & 6.5 & 4.442 \\
@@ -59,10 +57,10 @@ Dadurch wurde folgende Norm für die Ausprägung der Sprechgeschwindigkeit aufge
   \item [schnell] Der Wert ist größer als 5.6
 \end{description}
 
-Die ausgewählten Werte orientieren sich von den durchschnittswerten aus der Analyse der Beispieldatei. Die Analyse findet sich auch im Programmcode um spätere Analysen für andere Daten zu gewährleisten.
+Die ausgewählten Werte orientieren sich von den Durchschnittswerten aus der Analyse der Beispieldatei. Die Analysefunktion (\verb|printAverageSpeed()|) findet sich auch im Programmcode um spätere Analysen für andere Daten zu gewährleisten.
 
 \subsection{Durchschnittliche Tonlage und Schallstärke}
-Die Ausprägung für die Schallstärke und die durchschnittliche Tonlage wird wie folgt zusammengefasst:
+Die Ausprägung für Schallstärke und durchschnittliche Tonlage wird wie folgt zusammengefasst:
 \begin{description}
 \item [niedrig] falls sehr niedrig oder niedrig
 \item [normal] falls normal
@@ -72,8 +70,6 @@ Durch diese Normierung werden die Beispieldaten an die Aufgabenstellung angepass
 
 \section{Konkretisierung der Emotionen}
 Da nun weitere Ausprägungen durch die Beispieldaten dazugekommen sind, ist es notwendig, die Zuordnung der Emotionen zu konkretisieren. Die folgende Tabelle \ref{tab:konkretisierteEmotionen} stellt die finale Zuordnung der Emotionen dar. Unterschiede zu der vorherigen Tabelle \ref{tab:emotionenAbbildung} sind mit fetter Schrift makiert. In der Tabelle ist zu erkennen, dass die Ausprägung \textit{Normal} hinzugefügt worden ist. Diese Ausprägung steht in der Meinung des Entwicklerteams im starken Zusammenhang mit der Emotion \textit{Freude}. 
-%Zusätzlich wurde im Merkmal \textit{Schallstärke} die Emotion \textit{Angst} hinzugefügt.
-
 
 \begin{table}[h]
 \begin{tabular}{ l | c | c | c}
@@ -92,16 +88,15 @@ Da nun weitere Ausprägungen durch die Beispieldaten dazugekommen sind, ist es n
 
 \section{Konfidenz der Messungen}
 \label{konfidenzfestlegung}
-Da keine Zuverlässigkeit der Messung in der Aufgabenstellung angegeben ist, müssen diese vom Entwicklerteam fiktiv geschätzt werden. Diese Werte können statisch vor Programmstart leicht geändert werden. Die folgende Liste stellt die ausgesuchten Werte der Konfidenz der jeweiligen Messungen dar:
+Da keine Zuverlässigkeit der Messung in der Aufgabenstellung angegeben ist, müssen diese vom Entwicklerteam fiktiv geschätzt werden. Diese Werte können statisch vor Programmstart leicht in der Einstellungsdatei verändert werden. Die folgende Liste stellt die ausgesuchten Werte der Konfidenz der jeweiligen Messungen dar:
 \begin{description}
 \item [Sprechgeschwindigkeit] liegt bei 0.6
 \item [Tonlage] liegt bei 0.8
 \item [Schallstärke] liegt bei 0.7
 \end{description}
 
-
 \section{Ergebnisauswertung}
-Durch Akkumulation der Evidenzen führt das Programm zu einer Schlussfolgerung. Es wird die Emotion ausgewählt, dessen Plausabilität am höchsten ist. Da beide Dateien jeweils 50 Takte beinhalten, sollten im Idealfall jeweils 50 Emotionen ausgegeben werden, dessen Plausabilität des jeweiligen Taktes, am höchsten ist.
+Durch Akkumulation der Evidenzen führt das Programm zu einer Schlussfolgerung. Es wird die Emotion ausgewählt, dessen Plausabilität am höchsten ist. Da beide Dateien jeweils 50 Takte beinhalten, sollten im Idealfall insgesamt die 50 Emotionen ausgegeben werden, bei denen im jeweiligen Takt die Plausibilität am höchsten ist.
 
 
 
