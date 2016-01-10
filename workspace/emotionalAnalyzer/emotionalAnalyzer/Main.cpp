@@ -48,11 +48,11 @@ vector<string> readFileInVector(string filename) {
 		counter++;
 
 		if((counter % 4) == 0) {
-			getline(file, value, '\n'); // read a string until next comma: 
+			getline(file, value, CSV_ENDL); // read a string until next comma: 
 										// http://www.cplusplus.com/reference/string/getline/
 		}
 		else {
-			getline(file, value, ';'); // read a string until next comma: 
+			getline(file, value, CSV_SEP); // read a string until next comma: 
 										// http://www.cplusplus.com/reference/string/getline/
 		}
 
@@ -65,7 +65,53 @@ vector<string> readFileInVector(string filename) {
 
 	read.pop_back(); //empty element at the end gave me headache
 
+	file.close();
+
 	return read;
+}
+
+void writeResultsToFile(string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
+	if(evidences.size() != plausibilities.size()) {
+		cout << " Error: Something went wrong while calculating evidences and plausibilities!" << endl;
+
+		return;
+	}
+	
+	ofstream file(filename);
+
+	file << HEAD_CLK << CSV_SEP
+		<< FEAR << CSV_SEP
+		<< SURPRISE << CSV_SEP
+		<< ANGER << CSV_SEP
+		<< JOY << CSV_SEP
+		<< DISGUST << CSV_SEP
+		<< SORROW << CSV_SEP
+		<< HEAD_MAX << CSV_SEP
+		<< HEAD_MAXVAL << CSV_ENDL;
+
+	double crt;
+	double max;
+	string e;
+
+	for(size_t i = 0; i < evidences.size() && file.good(); i++) {
+		crt = 0.0;
+		max = 0.0;
+
+		file << (i + 1) << CSV_SEP;
+
+		for(const auto& emotion : OMEGA) {
+			file << (crt = plausibilities[i][emotion]) << CSV_SEP;
+
+			if(crt > max) {
+				e = emotion;
+				max = crt;
+			}
+		}
+
+		file << e << CSV_SEP << max << CSV_ENDL;
+	}
+
+	file.close();
 }
 
 void printAverageSpeed(vector<string> data) {
@@ -220,8 +266,11 @@ map<string, double> plausibility(vector<Evidence> data) {
 	return plausibility;
 }
 
-void calculate_evidences(vector<string> data) {
-	vector<vector<Evidence>> results;
+void calculate_plausibilities(string input, string output) {
+	vector<string> data = readFileInVector(input);
+
+	vector<vector<Evidence>> evidences;
+	vector<map<string, double>> plausibilities;
 
 	for(size_t i = DATA_START; i < data.size(); i = i + 4) {
 		cout << "Takt " << data[i] << endl;
@@ -235,33 +284,38 @@ void calculate_evidences(vector<string> data) {
 		set<string> intensityEmotions = getEmotionOfIntensity(data[i + 3]);
 		double intensityConfidence = CONF_INTENSITY;
 
-		results.push_back(
+		evidences.push_back(
 			dempster(speedEmotions, speedConfidence,
 						pitchEmotions, pitchConfidence,
 						intensityEmotions, intensityConfidence));
 
-		plausibility(results.back());
+		plausibilities.push_back(plausibility(evidences.back()));
+
 		std::cout << endl;
 	}
+
+	writeResultsToFile(output, evidences, plausibilities);
+
+	cout << " Note: Done." << endl;
 }
 
 int main() {
 	global_init();
 	//Read file input
-	vector<string> file1 = readFileInVector(FILE1);
-	vector<string> file2 = readFileInVector(FILE2);
+	//vector<string> file1 = readFileInVector(FILE1);
+	//vector<string> file2 = readFileInVector(FILE2);
 	//vector<string> file3 = readFileInVector(FILE3); File3 is not relevant for this project.
 	//this functions are printing the example data
 	//use this for debug purposes
 
-	printFile(FILE1);
+	//printFile(FILE1);
 	/*printFile(FILE2);
 	printAverageSprechgeschwindigkeit(file1);
 	printAverageSprechgeschwindigkeit(file2);
 	*/
 
 	//Init program
-	calculate_evidences(file1);
+	calculate_plausibilities(FILE1, OUTPUT);
 
 	//TEST - DEBUG DELETE LATER
 	//set<string> test = getEmotionOfSprechgeschwindigkeit(toDouble(file1[5]));

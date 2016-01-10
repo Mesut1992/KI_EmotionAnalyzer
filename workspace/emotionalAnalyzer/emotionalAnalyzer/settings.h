@@ -5,9 +5,12 @@
 #ifndef _SETTINGS_H
 #define _SETTINGS_H
 
-#define FILE1 "E_004.csv" //Path of 1st file
-#define FILE2 "E_004b.csv" //Path of 2nd file
-#define FILE3 "E_004c.csv" //Path of 3rd file
+// I/O File Settings
+#define FILE1 "E_004.csv" // Path of 1st file
+#define FILE2 "E_004b.csv" // Path of 2nd file
+#define FILE3 "E_004c.csv" // Path of 3rd file
+
+#define OUTPUT "result.csv" // Path of Output File
 
 #define DATA_START 4 //the data starts at element of 4, or index 4 (to skip header)
 
@@ -38,6 +41,13 @@
 
 // Definitions for Plausibility
 #define PL_MAX "max"
+
+// Definitions for Output File
+#define CSV_SEP ';'
+#define CSV_ENDL '\n'
+#define HEAD_CLK "Takt"
+#define HEAD_MAX "Max"
+#define HEAD_MAXVAL "PL of Max"
 
 namespace std {
 
