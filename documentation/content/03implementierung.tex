@@ -1,16 +1,16 @@
 \chapter{Implementierung}
-Das Programm ist komplett in C++ geschrieben und kann dabei in 3 Teile eingeteilt werden.
+Das Programm ist komplett in C++ geschrieben und kann dabei in vier Teile eingeteilt werden.
 
 \begin{enumerate}
-  \item Das Einlesen der Beispieldaten. 
-  \item Das Erstellen der Evidenzen.
-  \item Die Verarbeitung der Evidenzen.
-  \item Die Ergebnisausgabe.
+  \item Einlesen der Beispieldaten aus den CSV-Dateien,
+  \item Erstellen der Evidenzen für Sprechgeschwindigkeit (\(m_1\)), Tonlage (\(m_2\)) und Schallstärke (\(m_3\)),
+  \item Verarbeiten der Evidenzen (Bilden von \(m_123\) und Berechnung der Plausibilität) und
+  \item Ergebnisausgabe (Schreiben in eine CSV-Datei).
 \end{enumerate}
 
-Dabei ist jeglicher, relevante Codesegment kommentiert.
+Dabei ist jegliches, relevante Codesegment im Quellcode kommentiert.
 
-\section{Datei Struktur}
+\section{Dateistruktur}
 Das Programm ist in drei Dateien aufgeteilt:
 
 \begin{description}
@@ -48,12 +48,12 @@ void plausability(vector<Evidenz> data);
 \end{lstlisting}
 
 \section{Datenstruktur der Evidenzen}
-Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \texit{Vector} verbunden.
+Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \textit{Vector} verbunden.
 
 \textbf{Um das allignment sollte man sich am schluss kümmern.}
 \begin{figure}
 \centering
-\includegraphics[width=\textwidth]{images/Evidenzen_diagramm.pdf}
+%\includegraphics[width=\textwidth]{images/Evidenzen_diagramm.pdf}
 \caption{Struktur der Evidenzen}
 \label{diagramm_evidenzen}
 \end{figure}

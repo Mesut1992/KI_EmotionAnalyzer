@@ -17,7 +17,22 @@
 
 using namespace std;
 
-//
+// Predefined Functions (all functions in this file):
+
+double toDouble(string s);
+void printFile(string filename);
+vector<string> readFileInVector(string filename);
+void writeResultsToFile(string filename, 
+						vector<vector<Evidence>> evidences, 
+						vector<map<string, double>> plausibilities);
+void printAverageSpeed(vector<string> data);
+set<string> getEmotionOfSpeed(double);
+set<string> getEmotionOfPitch(string);
+set<string> getEmotionOfIntensity(string);
+map<string, double> plausibility(vector<Evidence> data);
+void calculate_plausibilities(string input, string output);
+
+// Implementation
 
 double toDouble(string s) {
 	replace(s.begin(), s.end(), ',', '.');
@@ -29,8 +44,10 @@ void printFile(string filename) {
 	string value;
 
 	while(file.good()) {
-		getline(file, value, ';'); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
-		//cout << string(value, 1, value.length() - 2); // display value removing the first and the last character from it
+		getline(file, value, ';'); // read a string until next comma:
+								// http://www.cplusplus.com/reference/string/getline/
+		//cout << string(value, 1, value.length() - 2); 
+		// display value removing the first and the last character from it
 		cout << string(value) << "-";
 	}
 
@@ -70,9 +87,12 @@ vector<string> readFileInVector(string filename) {
 	return read;
 }
 
-void writeResultsToFile(string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
+void writeResultsToFile(string filename, 
+						vector<vector<Evidence>> evidences, 
+						vector<map<string, double>> plausibilities) {
 	if(evidences.size() != plausibilities.size()) {
-		cout << " Error: Something went wrong while calculating evidences and plausibilities!" << endl;
+		cout << " Error: Something went wrong while calculating "
+			<< "evidences and plausibilities!" << endl;
 
 		return;
 	}
@@ -258,10 +278,12 @@ map<string, double> plausibility(vector<Evidence> data) {
 			e = emotion;
 		}
 
-		std::cout << "PI for Emotion: " << emotion << " : " << plausibility[emotion] << " " << endl;
+		std::cout << "PI for Emotion: " << emotion << " : " 
+			<< plausibility[emotion] << " " << endl;
 	}
 
-	std::cout << "Max PI found in Emotion: " << e << " : " << plausibility["max"] << endl;
+	std::cout << "Max PI found in Emotion: " << e << " : " 
+		<< plausibility["max"] << endl;
 
 	return plausibility;
 }
