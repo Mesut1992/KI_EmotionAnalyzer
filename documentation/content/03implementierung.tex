@@ -22,17 +22,18 @@ Das Programm ist in drei Dateien aufgeteilt:
 
 \begin{description}
   \item [Main.cpp] Diese Datei verlinkt die anderen beiden Dateien und dient als Startpunkt. 
-  \item [settings.h] In dieser Datei finden sich jegliche voreingestellten Macros und globale Initialisierungen und Variablen für das Programm. Die Headerdatei wird in die Main.cpp und die dempster.h datei eingebunden.
-  \item [dempster.h] Diese Datei beinhaltet den Dempster Algorithmus, welche von der Main.cpp aufgerufen wird.
+  \item [settings.h] In dieser Datei finden sich jegliche voreingestellten Makros, globale Initialisierungen, Konstanten und Variablen für das Programm. Die Headerdatei wird in Main.cpp und dempster.h eingebunden.
+  \item [dempster.h] Diese Datei beinhaltet die Dempsterfunktion, welche von der Main.cpp aufgerufen wird.
   \end{description}
 
- Der verbleibende Teil dieser Dokumentation fokussiert sich nacheinenader auf jede genannte Datei und bespricht die implementierten Funktionen.
+ Der verbleibende Teil dieser Dokumentation fokussiert sich nacheinander auf jede, genannte einzelne Datei und bespricht die implementierten Funktionen.
 
 \section{settings.h}
 Die Voreinstellungen des Programmes können in drei Teile eingeteilt werden.
-Der erste Teil beinhaltet den Pfad zu den Beispieldaten \verb|E_004.csv| und \verb|E_004b.csv|. Zusätzlich kann noch ein Index angegeben werden, welcher angibt, an welchem Element die Daten in den Dateien beginnen.
 
-Im zweiten Teil können die Konfidenzwerte festgelegt werden, welche in Kapitel \ref{konfidenzfestlegung} besprochen wurden.
+Der erste Teil beinhaltet die Pfade zu den Beispiel-Eingabedaten (\verb|E_004.csv| und \verb|E_004b.csv|) und den jeweiligen Ausgabedaten. Zusätzlich kann noch ein Index angegeben werden, an welchem die Daten in den Dateien starten (um beispielsweise den Header zu überspringen).
+
+Im zweiten Teil können die Konfidenzwerte (die Gewichtung der Evidenzen) festgelegt werden, welche in Kapitel \ref{konfidenzfestlegung} besprochen wurden. 
 
 Im dritten Teil sind jegliche Werte der Ausprägungen festgelegt. Beispielsweise kann hier festgelegt werden, welcher Wert für den unteren Teil der Sprechgeschwindigkeit ausschlaggebend ist (Kapitel \ref{sprechgeschwindigkeit_auspr}) und wie die Ausprägungen der Merkmale in den vorgegeben Daten gespeichert sind.
 
@@ -49,9 +50,8 @@ struct Evidence {
 };
 \end{lstlisting}
 
-Entscheidend sind hier das Set und der double-Wert. \textit{emotions} beinhaltet alle zu dieser Evidenz gehörenden Emotionen (beispielsweise \textit{Wut} und \textit{Freude}) und kann auch leer sein, und \textit{value} speichert die dazugehörige Konfidenz. Das dazugehörige Omega wird mit dem selben Strukt gespeichert; 
-%\textit{emotions} beinhaltet hierbei alle möglichen Emotionen und \textit{value} \(1 - (Konfidenz der Evidenz)\). 
-Die Evidenz und das dazugehörige Omega werden in einem Vektor mit zwei Komponenten gespeichert. Diese Struktur wird in Diagramm \ref{diagramm_evidenzen} dargestellt.
+
+Entscheidend sind hier das Set und der double-Wert. \textit{Evidence.emotions} beinhaltet alle zu dieser Evidenz gehörenden Emotionen (beispielsweise \textit{Wut} und \textit{Freude}) und kann auch leer sein, und \textit{Evidence.value} speichert die dazugehörige Konfidenz. Das entsprechende Omega wird mit dem gleichen Strukt gespeichert; \textit{emotions} beinhaltet hierbei alle Emotionen und \textit{value} ist \(1 - (Konfidenz der Evidenz)\). Die Evidenz und das dazugehörige Omega werden in einem Vektor mit mindestens zwei Komponenten gespeichert (oder mehr, falls Resultat einer Akkumulation). Dies ist in Diagramm \ref{diagramm_evidenzen} erkennbar.
 
 \begin{figure}
 \centering
@@ -60,36 +60,31 @@ Die Evidenz und das dazugehörige Omega werden in einem Vektor mit zwei Komponen
 \label{diagramm_evidenzen}
 \end{figure}
 
-Zuerst wird aus \(m_1\) und \(m_2\) die Evidenz \(m_{12}\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_{12}\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert.
-
-Durch Akkumulation von \(m_{12}\) und \(m_3\) entsteht auf gleichem Wege \(m_{123}\), und die resultierenden Mengen werden auf Konflikte untersucht und gegebenenfalls gelöscht und der Rest korrigiert. 
+In der \textit{Dempster}-Funktion wird zuerst aus \(m_1\) und \(m_2\) die Evidenz \(m_(12)\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_{12}\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert. Durch Akkumulation von \(m_{12}\) und \(m_3\) entsteht auf gleichem Wege \(m_{123}\), und die resultierenden Mengen werden auf Konflikte untersucht, diese gegebenenfalls gelöscht und der Rest korrigiert. Die Funktion wird einmal pro Takt aufgerufen.
+ 
+Die Plausibilitätsberechnung geschieht in der Funktion \verb|plausibility()|. Als Eingabeparameter wird hier die Evidenz \(m_{123}\) erwartet. Durch Iterieren über alle Teilevidenzen werden für jede Emotion die Teilwerte aufsummiert und in einen neuen Vektor gespeichert. Anschließend wird die größte Plausibilität gesucht und zusätzlich abgespeichert.
  
 \section{Main.cpp}
-Die Main.cpp Datei beinhaltet logischerweise die \textit{Main-Funktion}, welche bei Programmstart aufgerufen wird.
-Der folgende Code-Ausschnitt zeigt jegliche Funktionssignaturen der Main.cpp Datei.
+Die Main.cpp Datei beinhaltet die \textit{Main-Funktion}, welche bei Programmstart aufgerufen wird.
+Zusätzlich zu der Main-Funktion sind hier weitere Funktionen zu finden. Der folgende Ausschnitt zeigt jegliche Funktionssignaturen der Main.cpp befindet sich im Abschnitt \textit{Predefined Functions} dieser Datei: 
 
-\begin{lstlisting}[caption=Signaturen der Funktionen der Main.cpp Datei, label=Bsp.1]
+\begin{lstlisting}[caption=Predefined classes/functions aus der Main.cpp, label=Bsp.1]
 double toDouble(string s);
 void printFile(string filename);
 vector<string> readFileInVector(string filename);
 void writeResultsToFile(string filename, 
-            vector<vector<Evidence>> evidences, 
-            vector<map<string, double>> plausibilities);
+	vector<vector<Evidence>> evidences, 
+	vector<map<string, double>> plausibilities);
 void printAverageSpeed(vector<string> data);
 set<string> getEmotionOfSpeed(double);
 set<string> getEmotionOfPitch(string);
 set<string> getEmotionOfIntensity(string);
-void calculate_plausibilities(string input, string output);
+void calculatePlausibilities(string input, string output);
 \end{lstlisting}
-Die Funktion \textit{calculate\_plausibilities} ruft vorerst die Funktion \textit{readFileInVector} um die Daten zu lesen, die Dempster-Funktion in der dempster.h Datei um die Daten auszuwerten und daraufhin die Funktion \textit{writeResultsToFile} damit das Ergebnis in eine Datei geschrieben wird.
+Die Funktionen \verb|printFile()|, \verb|readFileInVector| und \verb|writeResultsToFile()| sind  für Dateieingabe und -ausgabe zuständig. Mit \verb|printAverageSpeed()| wurde die durchschnittliche Sprechgeschwindigkeit bestimmt. \verb|getEmotionOfSpeed()|, \verb|getEmotionOfPitch()| und \verb|getEmotionOfIntensity()| liefern die Emotionen anhand der Eingabewerte entsprechend der Tabelle \ref{tab:konkretisierteEmotionen}. In der Funktion \verb|calculatePlausibilities()| befindet sich das Hauptprogramm bestehend aus Aufruf der Einlesefunktionen, einer Schleife, die für jeden Takt die \textit{Dempster}-Funktion aufruft und dem Aufruf der Ausgabefunktion.
 
-
-Die Funktionen in Zeile 8,9 und 10, welche mit \textit{getEmotion} beginnen, sind dazu dar, um aus den Beispieldaten die Emotionen zu extrahieren.
-
-
-Die Funktion \textit{printAverageSpeed} analysiert die Werte der Sprechgeschwindigkeit und gibt den Durchschnittswert und weitere nützliche Informationen in der Konsole aus.
+%Die Funktion \textit{calculate\_plausibilities} ruft vorerst die Funktion \textit{readFileInVector} um die Daten zu lesen, die Dempster-Funktion in der dempster.h Datei um die Daten auszuwerten und daraufhin die Funktion \textit{writeResultsToFile} damit das Ergebnis in eine Datei geschrieben wird. Die Funktionen in Zeile 8,9 und 10, welche mit \textit{getEmotion} beginnen, sind dazu dar, um aus den Beispieldaten die Emotionen zu extrahieren. Die Funktion \textit{printAverageSpeed} analysiert die Werte der Sprechgeschwindigkeit und gibt den Durchschnittswert und weitere nützliche Informationen in der Konsole aus.
 
 %\section{Datenstruktur der Evidenzen}
 %Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \textit{Vector} verbunden.
-
 
