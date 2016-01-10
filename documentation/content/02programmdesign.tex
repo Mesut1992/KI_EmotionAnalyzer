@@ -2,7 +2,7 @@
 Dieses Kapitel befasst sich mit der Zuordnung jeder Emotion und dessen Attribute. Vorerst wird diese Zuordnung der Aufgabenstellung gemäß dargestellt. Daraufhin werden die Werte der Beispieldaten näher betrachtet und die zuvor vorgestellte Zuordnung der Emotionen, konkretisiert. 
 
 \section{Emotionen}
-Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus der Aufgabenstellung dar. Dabei fällt auf, dass die Schallstärke nicht ausschlaggebend für die Emotion \textit{Angst} ist. Außerdem fällt auf, dass keineMittelstufe in den Ausprägungen der Merkmale existiert.
+Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus der Aufgabenstellung dar. Dabei fällt auf, dass die Schallstärke nicht ausschlaggebend für die Emotion \textit{Angst} und das die Sprechgeschwindigkeit nicht auf Traurigkeit zutreffend ist. Außerdem fällt auf, dass keine Mittelstufe in den Ausprägungen der Merkmale existiert.
 
 \begin{table}[h]
 \begin{tabular}{ l | c | c | c | c}
@@ -13,9 +13,9 @@ Die Tabelle \ref{tab:emotionenAbbildung} stellt die Einstufung der Emotionen aus
   Wut & W & Schnell & Hoch & Hoch \\
   Freude & F & Schnell / Langsam & Hoch & Hoch \\
   Ekel & E & Langsam & Tief & Schwach \\
-  Traurigkeit & T & Langsam & Tief & Schwach \\
+  Traurigkeit & T & - & Tief & Schwach \\
 \end{tabular}
-\caption{Abbildung der Emotionen}
+\caption{Abbildung der Emotionen nach Aufgabenstellung}
 \label{tab:emotionenAbbildung}
 \end{table}
 
@@ -38,6 +38,7 @@ Da die Anzahl der Ausprägungen in den Beispieldaten größer ist, als in der Au
 Jegliche Normierungen sind über eine externe Settingsdatei statisch festgelegt. Diese können, unabhängig vom Programmcode, vor Programmstart angepasst werden. Der Programmaufbau wird im nächsten Kapitel näher betrachtet.
 
 \subsection{Sprechgeschwindigkeit}
+\label{sprechgeschwindigkeit_auspr}
 Nach einer Analyse der Werte der Sprechgeschwindigkeit ist festgestellt worden, dass die Werte in beiden Dateiein von 2 bis 7 variieren. Die folgende Tabelle \ref{tab:sprechgeschwdingikeit} stellt die Analyse dar. 
 
 \begin{table}[h]
@@ -83,13 +84,14 @@ Da nun weitere Ausprägungen durch die Beispieldaten dazugekommen sind, ist es n
   Wut W & \textbf{Normal}/Schnell & Hoch & Hoch \\
   Freude F & Langsam/\textbf{Normal}/Schnell & \textbf{Normal}/Hoch &\textbf{Normal}/Hoch\\
   Ekel E & Langsam & Tief & Schwach/\textbf{Normal} \\
-  Traurigkeit T & Langsam & Tief & Schwach \\
+  Traurigkeit T & - & Tief & Schwach \\
 \end{tabular}
 \caption{Konkretisierung der Emotionen}
 \label{tab:konkretisierteEmotionen}
 \end{table}
 
 \section{Konfidenz der Messungen}
+\label{konfidenzfestlegung}
 Da keine Zuverlässigkeit der Messung in der Aufgabenstellung angegeben ist, müssen diese vom Entwicklerteam fiktiv geschätzt werden. Diese Werte können statisch vor Programmstart leicht geändert werden. Die folgende Liste stellt die ausgesuchten Werte der Konfidenz der jeweiligen Messungen dar:
 \begin{description}
 \item [Sprechgeschwindigkeit] liegt bei 0.6
