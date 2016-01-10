@@ -7,4 +7,54 @@ Das Programm ist komplett in C++ geschrieben und kann dabei in 3 Teile eingeteil
   \item Die Verarbeitung der Evidenzen.
   \item Die Ergebnisausgabe.
 \end{enumerate}
- 
+
+Dabei ist jeglicher, relevante Codesegment kommentiert.
+
+\section{Datei Struktur}
+Das Programm ist in drei Dateien aufgeteilt:
+
+\begin{description}
+  \item [Main.cpp] Diese Datei verlinkt die anderen beiden Dateien und dient als Startpunkt. 
+  \item [settings.h] In dieser Datei finden sich jegliche voreingestellten Macros und globale Initialisierungen und Variablen für das Programm. Die Headerdatei wird in die Main.cpp und die dempster.h datei eingebunden.
+  \item [dempster.h] Diese Datei beinhaltet die Dempsterfunktion, welche von der Main.cpp aufgerufen wird.
+  \end{description}
+
+ Der verbleibende Teil dieser Dokumentation fokussiert sich nacheinenader auf jede, genannte einzelne Datei und bespricht die implementierten Funktionen.
+
+\section{settings.h}
+Die Voreinstellungen des Programmes können in drei Teile eingeteilt werden.
+Der erste Teil beinhaltet den Pfad zu den Beispieldaten \verb|E_004.csv| und \verb|E_004b.csv|. Zusätzlich kann noch ein Index angegeben werden, an welchem die Daten in den Dateien starten.
+
+Im zweiten Teil können die Konfidenzwerte festgelegt werden, welche in Kapitel \ref{konfidenzfestlegung} besprochen wurden.
+
+Im dritten Teil sind jegliche Werte der Ausprägungen festgelegt. Beispielsweise kann hier festgelegt werden, welcher Wert für den unteren Teil der Sprechgeschwindigkeit ausschlaggebend ist (Kapitel \ref{sprechgeschwindigkeit_auspr}).
+
+\section{dempster.h}
+\textbf{HIER NOCH GENAU EINFÜGEN, WAS IN DER DEMPSTER DATEI IST}
+
+\section{Main.cpp}
+Die Main.cpp Datei beinhaltet logischerweise die \textit{Main-Funktion}, welche bei Programmstart aufgerufen wird.
+Zusätzlich zu der Main-Funktion, lassen sich weitere Funktionen finden. Der folgende Ausschnitt zeigt jegliche Funktionssignaturen der Main.cpp und ist im Teil \textit{predefined Functions} zu finden: 
+
+\begin{lstlisting}[caption=Predefined classes/functions aus der Main.cpp, label=Bsp.1]
+void printFile(string filename);
+vector<string> readFileInVector(string filename);
+void printAverageSprechgeschwindigkeit(vector<string> data); 
+double toDouble(string s); 
+set<string> getEmotionOfSprechgeschwindigkeit(double value); 
+void dempster(vector<string> data);
+struct Evidenz;
+void plausability(vector<Evidenz> data);
+\end{lstlisting}
+
+\section{Datenstruktur der Evidenzen}
+Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \texit{Vector} verbunden.
+
+\textbf{Um das allignment sollte man sich am schluss kümmern.}
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/Evidenzen_diagramm.pdf}
+\caption{Struktur der Evidenzen}
+\label{diagramm_evidenzen}
+\end{figure}
+

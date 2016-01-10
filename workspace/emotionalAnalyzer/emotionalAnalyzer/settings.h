@@ -3,8 +3,8 @@ This file contains all settings
 */
 
 #define FILE1 "E_004.csv" //Path of 1st file
-#define FILE2 "E_004b.csv" //Path of 1st file
-#define FILE3 "E_004c.csv" //Path of 1st file
+#define FILE2 "E_004b.csv" //Path of 2nd file
+//#define FILE3 "E_004c.csv" //3rd file not related to this project
 #define STARTOFDATA 4 //the data starts at element of 4, or index 4.
 
 //Konfidenzfestlegung
