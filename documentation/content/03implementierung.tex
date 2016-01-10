@@ -51,7 +51,14 @@ struct Evidence {
 
 Entscheidend sind hier das Set und der double-Wert. \textit{emotions} beinhaltet alle zu dieser Evidenz gehörenden Emotionen (beispielsweise \textit{Wut} und \textit{Freude}) und kann auch leer sein, und \textit{value} speichert die dazugehörige Konfidenz. Das dazugehörige Omega wird mit dem selben Strukt gespeichert; 
 %\textit{emotions} beinhaltet hierbei alle möglichen Emotionen und \textit{value} \(1 - (Konfidenz der Evidenz)\). 
-Die Evidenz und das dazugehörige Omega werden in einem Vektor mit zwei Komponenten gespeichert.
+Die Evidenz und das dazugehörige Omega werden in einem Vektor mit zwei Komponenten gespeichert. Diese Struktur wird in Diagramm \ref{diagramm_evidenzen} dargestellt.
+
+\begin{figure}
+\centering
+\includegraphics[width=\textwidth]{images/Evidenzen_diagramm.pdf}
+\caption{Struktur der Evidenzen}
+\label{diagramm_evidenzen}
+\end{figure}
 
 Zuerst wird aus \(m_1\) und \(m_2\) die Evidenz \(m_{12}\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_{12}\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert.
 
@@ -82,14 +89,7 @@ Die Funktionen in Zeile 8,9 und 10, welche mit \textit{getEmotion} beginnen, sin
 
 Die Funktion \textit{printAverageSpeed} analysiert die Werte der Sprechgeschwindigkeit und gibt den Durchschnittswert und weitere nützliche Informationen in der Konsole aus.
 
-\section{Datenstruktur der Evidenzen}
-Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \textit{Vector} verbunden.
+%\section{Datenstruktur der Evidenzen}
+%Da die Datenstruktur der Evidenzen nicht banal ist, wird diese an diesem Punkt der Dokumentation, näher beschrieben. Das Diagramm \ref{diagramm_evidenzen} zeigt die Struktur der Evidenzen dar. In dem Diagramm ist zu sehen, dass eine Evidenz drei verschiedenen Datentypen besteht. In der untersten Ebene befindet sich ein \textit{Set} aus Emotionen, welche als Strings in der Menge gespeichert sind. Zugehörig zu dieser Menge, ist ein Dezimalwert als \textit{Double} gespeichert. Diese beiden Datentypen werden über den Datentyp \textit{Struct} verbunden. Dabei beinhaltet eine Evidenz mindestens zwei Structs, kann jedoch mehr beinhalten. Mehrere Structs werden daraufhin über einen \textit{Vector} verbunden.
 
-\textbf{Um das allignment sollte man sich am schluss kümmern.}
-\begin{figure}
-\centering
-%\includegraphics[width=\textwidth]{images/Evidenzen_diagramm.pdf}
-\caption{Struktur der Evidenzen}
-\label{diagramm_evidenzen}
-\end{figure}
 

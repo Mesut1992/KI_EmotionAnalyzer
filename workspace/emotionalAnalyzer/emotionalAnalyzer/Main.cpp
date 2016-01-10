@@ -29,7 +29,7 @@ void printAverageSpeed(vector<string> data);
 set<string> getEmotionOfSpeed(double);
 set<string> getEmotionOfPitch(string);
 set<string> getEmotionOfIntensity(string);
-void calculate_plausibilities(string input, string output);
+void calculatePlausibilities(string input, string output);
 
 // Implementation
 
@@ -239,7 +239,7 @@ set<string> getEmotionOfIntensity(string value) {
 	return temp;
 }
 
-void calculate_plausibilities(string input, string output) {
+void calculatePlausibilities(string input, string output) {
 	vector<string> data = readFileInVector(input);
 
 	vector<vector<Evidence>> evidences;
@@ -278,11 +278,11 @@ int main() {
 	char pause;
 	std::cout << "Press 'enter' to start with the file " << FILE1 << "." << endl;
 	pause = getchar();
-	calculate_plausibilities(FILE1, OUTPUT1);
+	calculatePlausibilities(FILE1, OUTPUT1);
 		
 	std::cout << "Press 'enter' to continue with the file " << FILE2 << "." << endl;
 	pause = getchar();
-	calculate_plausibilities(FILE2, OUTPUT2);
+	calculatePlausibilities(FILE2, OUTPUT2);
 
 	std::cout << "To exit this programm press 'enter'." << endl;
 	pause = getchar();

@@ -1,47 +1,540 @@
 % !TeX root = ../dokumentation.tex
 
 \addchap{\langanhang}
+In diesem Teil befindet sich noch der Code des Programmes. Dieser befindet sich auch in den zugehörigen Dateien in dem Ordner \textit{Code}.
+\section*{Main.cpp}
+\begin{lstlisting}[caption=Code aus Main.cpp, label=Bsp.1]
+#include <stdio.h>
+#include <iostream>
+#include <string>
+#include <fstream>
+#include <vector>
+#include <algorithm>
+#include <cstdlib>
+#include <set>
+#include <map>
 
-(Beispielhafter Anhang)
- 
+#include "settings.h"
+#include "dempster.h"
 
-{\Large
-\begin{enumerate}[label=\Alph*.]
-	\item Assignment
-	\item List of CD Contents
-	\item CD 
-\end{enumerate}
+using namespace std;
+
+double toDouble(string s) {
+	replace(s.begin(), s.end(), ',', '.');
+	return atof(s.c_str());
 }
-\pagebreak
-%\includepdf[pages=-,scale=.9,pagecommand={}]{Aufgabenstellung.pdf} % PDF um 10% verkleinert einbinden --> Kopf- und Fußzeile  werden so korrekt dargestellt. Die Option `pages' ermöglicht es, eine bestimmte Sequenz von Seiten (z.B. 2-10 oder `-' für alle Seiten) auszuwählen.
-\pagebreak
-\section*{B. List of CD Contents}
-\begin{tabbing}
-	mm \= mm \= mmmmmmmmmmmmmmmm \= \kill
-	$\vdash$ \textbf{Literature/} \\ 
-	| \> $\vdash$ \textbf{Citavi-Project(incl pdfs)/} \> \> $\Rightarrow$ \textit{Citavi (bibliography software) project with}\\
-	| \> | \> \> \textit{almost all found sources relating to this report.} \\
-	| \> | \> \> \textit{The PDFs linked to bibliography items therein} \\
-	| \> | \> \> \textit{are in the sub-directory `CitaviFiles'}\\
-	| \> | \>  -- bibliography.bib  \> $\Rightarrow$ \textit{Exported Bibliography file with all sources}\\
-	| \> | \>  --	Studienarbeit.ctv4  \>  $\Rightarrow$ \textit{Citavi Project file}\\
-	| \> | \>  $\vdash$ \textbf{CitaviCovers/} \>  $\Rightarrow$ \textit{Images of bibliography cover pages}\\
-	| \> | \>  $\vdash$ \textbf{CitaviFiles/} \> $\Rightarrow$ \textit{Cited and most other found PDF resources}\\ %\llcorner
-	| \> $\vdash$ \textbf{eBooks/} \\
-	| \> $\vdash$ \textbf{JournalArticles/} \\
-	| \> $\vdash$ \textbf{Standards/}\\
-	| \> $\vdash$ \textbf{Websites/} \\ %\llcorner
-	|\\
-	$\vdash$ \textbf{Presentation/} \\
-	| \>  --presentation.pptx\\
-	| \>  --presentation.pdf\\
-	|\\
-	$\vdash$ \textbf{Report/} \\ %\llcorner
-	\>  -- Aufgabenstellung.pdf\\
-	\>  -- Studienarbeit2.pdf\\
-	\>  $\vdash$ \textbf{Latex-Files/}   $\Rightarrow$ \textit{editable \LaTeX~files and other included files for this report}\\ %\llcorner
-	\> \>  $\vdash$  \textbf{ads/}   	\> $\Rightarrow$ \textit{Front- and Backmatter}\\
-	\> \>  $\vdash$  \textbf{content/}  \> $\Rightarrow$ \textit{Main part}\\
-	\> \>  $\vdash$  \textbf{images/}   \> $\Rightarrow$ \textit{All used images}\\
-	\> \>  $\vdash$  \textbf{lang/}  \> $\Rightarrow$ \textit{Language files for \LaTeX~template}\\ %\llcorner
-\end{tabbing}
+
+void printFile(string filename) {
+	ifstream file(filename);
+	string value;
+
+	while(file.good()) {
+		getline(file, value, ';'); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
+		//cout << string(value, 1, value.length() - 2); // display value removing the first and the last character from it
+		cout << string(value) << "-";
+	}
+
+	cout << endl;
+}
+
+vector<string> readFileInVector(string filename) {
+	vector<string> read;
+	ifstream file(filename);
+	string value;
+	int counter = 0; // Every 4th element has a '\n' afterwards. 
+						// This needs to be removed from the element in the vector.
+
+	while(file.good()) {
+		counter++;
+
+		if((counter % 4) == 0) {
+			getline(file, value, CSV_ENDL); // read a string until next comma
+		}
+		else {
+			getline(file, value, CSV_SEP); // read a string until next comma
+		}
+
+		read.push_back(value);
+	}
+
+	if(read.empty()) {
+		cerr << " Error: Vector empty. Probably unreadable file";
+	}
+
+	read.pop_back(); //empty element at the end gave me headache
+
+	file.close();
+
+	return read;
+}
+
+void writeResultsToFile(string input, string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
+	if(evidences.size() != plausibilities.size()) {
+		cout << " Error: Something went wrong while calculating evidences and plausibilities!" << endl;
+
+		return;
+	}
+	
+	ofstream file(filename);
+
+	file << HEAD_CLK << CSV_SEP
+		<< FEAR << CSV_SEP
+		<< SURPRISE << CSV_SEP
+		<< ANGER << CSV_SEP
+		<< JOY << CSV_SEP
+		<< DISGUST << CSV_SEP
+		<< SORROW << CSV_SEP
+		<< HEAD_MAX << CSV_SEP
+		<< HEAD_MAXVAL << CSV_ENDL;
+
+	double crt;
+	double max;
+	string e;
+
+	for(size_t i = 0; i < evidences.size() && file.good(); i++) {
+		crt = 0.0;
+		max = 0.0;
+
+		file << (i + 1) << CSV_SEP;
+
+		for(const auto& emotion : OMEGA) {
+			file << (crt = plausibilities[i][emotion]) << CSV_SEP;
+
+			if(crt > max) {
+				e = emotion;
+				max = crt;
+			}
+		}
+
+		file << e << CSV_SEP << max << CSV_ENDL;
+	}
+
+	file.close();
+	std::cout << "Saved results of data " << input << " in file: " << filename << "." << endl;
+}
+
+void printAverageSpeed(vector<string> data) {
+	int elem = 0;
+	int amountOfElements = 0;
+	double average = 0.0, min = 0.0, max = 0.0, temp = 0.0;
+	bool init = false;
+
+	for(int i = 4; i < data.size(); i += 4) { //empty 
+		elem = i + 1; // Get specific element of Sprechgeschwindigkeit 
+		temp = toDouble(data[elem]); // specific element of Sprechgeschwindigkeit
+		average += temp;
+		amountOfElements++;
+
+		//min max calculation
+		if(init == false) { //this just once
+			init = true;
+			min = temp;
+			max = min;
+		}
+
+		if(min > temp) {
+			min = temp;
+		}
+		else if(max < temp) {
+			max = temp;
+		}
+	}
+
+	average = average / amountOfElements;
+
+	cout << "The average Speed is: " << average << endl;
+	cout << "The max value is: " << max << endl;
+	cout << "The min value is: " << min << endl;
+}
+
+set<string> getEmotionOfSpeed(double value) {
+	set<string> temp;
+
+	if(value <= SLOW) {
+		temp.insert(DISGUST); // Ekel
+		temp.insert(JOY); // Freude
+	}
+	else if(value >= FAST) {
+		temp.insert(FEAR); // Angst
+		temp.insert(SURPRISE); // Ueberraschung
+		temp.insert(ANGER); // Wut
+		temp.insert(JOY); // Freude
+	}
+	else { //Speed is normal - so it is between slow and fast (2.5 < x < 6.6)
+		temp.insert(ANGER); // Wut
+		temp.insert(JOY); // Freude
+	}
+
+	return temp;
+}
+
+set<string> getEmotionOfPitch(string value) {
+	set<string> temp;
+
+	//string.compare returns 0 if equal
+	if((value.compare(LOW1) == 0) || (value.compare(LOW2) == 0)) {
+		temp.insert(DISGUST); // Ekel
+		temp.insert(SORROW); // Traurigkeit
+	}
+	else if(value.compare(MEDIUM) == 0) {
+		temp.insert(JOY); // Freude
+	}
+	else if((value.compare(HIGH1) == 0) || (value.compare(HIGH2) == 0)) {
+		temp.insert(FEAR); // Angst
+		temp.insert(SURPRISE); // Ueberraschung
+		temp.insert(ANGER); // Wut
+		temp.insert(JOY); // Freude
+	}
+	else {
+		cerr << " Error: Could not read the data. Tried to read the following: "
+			<< value << " . Are you sure that you set all macros right?" << endl;
+	}
+
+	return temp;
+}
+
+set<string> getEmotionOfIntensity(string value) {
+	set<string> temp;
+
+	//string.compare returns 0 if equal
+	if((value.compare(LOW1) == 0) || (value.compare(LOW2) == 0)) {
+		temp.insert(DISGUST); // Ekel
+		temp.insert(SORROW); // Traurigkeit
+	}
+	else if(value.compare(MEDIUM) == 0) {
+		temp.insert(JOY); // Freude
+		temp.insert(DISGUST); // Ekel
+	}
+	else if((value.compare(HIGH1) == 0) || (value.compare(HIGH2) == 0)) {
+		temp.insert(SURPRISE); // Ueberraschung
+		temp.insert(ANGER); // Wut
+		temp.insert(JOY); // Freude
+	}
+	else {
+		cerr << " Error: Could not read the data. Tried to read the following: "
+			<< value << " . Are you sure that you set all macros right?" << endl;
+	}
+
+	return temp;
+}
+
+map<string, double> plausibility(vector<Evidence> data) {
+	std::cout << "Plausibility:" << endl;
+
+	map<string, double> plausibility;
+
+	//init
+	for(const auto& emotion : OMEGA) {
+		plausibility[emotion] = 0.0;
+	}
+
+	plausibility[PL_MAX] = 0.0;
+
+	for(size_t i = 0; i < data.size(); i++) {
+		//for each emotion
+		for(const auto& emotion : OMEGA) {
+			if(data[i].emotions.find(emotion) != data[i].emotions.end()) {
+				//found element
+				plausibility[emotion] += data[i].value;
+			}
+		}
+	}
+
+	//print
+	string e;
+	bool init = false;
+	for(const auto& emotion : OMEGA) {
+		if(init == false) {
+			init = true;
+			plausibility[PL_MAX] = plausibility[emotion];
+			e = emotion;
+		}
+
+		if(plausibility[PL_MAX] < plausibility[emotion]) {
+			plausibility[PL_MAX] = plausibility[emotion];
+			e = emotion;
+		}
+
+		std::cout << "PI for Emotion: " << emotion << " : " << plausibility[emotion] << " " << endl;
+	}
+
+	std::cout << "Max PI found in Emotion: " << e << " : " << plausibility["max"] << endl;
+
+	return plausibility;
+}
+
+void calculate_plausibilities(string input, string output) {
+	vector<string> data = readFileInVector(input);
+
+	vector<vector<Evidence>> evidences;
+	vector<map<string, double>> plausibilities;
+
+	for(size_t i = DATA_START; i < data.size(); i = i + 4) {
+		cout << "Takt " << data[i] << endl;
+
+		set<string> speedEmotions = getEmotionOfSpeed(toDouble(data[i + 1]));
+		double speedConfidence = CONF_SPEED;
+
+		set<string> pitchEmotions = getEmotionOfPitch(data[i + 2]);
+		double pitchConfidence = CONF_PITCH;
+
+		set<string> intensityEmotions = getEmotionOfIntensity(data[i + 3]);
+		double intensityConfidence = CONF_INTENSITY;
+
+		evidences.push_back(
+			dempster(speedEmotions, speedConfidence,
+						pitchEmotions, pitchConfidence,
+						intensityEmotions, intensityConfidence));
+
+		plausibilities.push_back(plausibility(evidences.back()));
+
+		std::cout << endl;
+	}
+
+	writeResultsToFile(input, output, evidences, plausibilities);
+
+	cout << " Note: Done." << endl;
+}
+
+int main() {
+	global_init();
+
+	char pause;
+	std::cout << "Press 'enter' to start with the file " << FILE1 << "." << endl;
+	pause = getchar();
+	calculate_plausibilities(FILE1, OUTPUT1);
+		
+	std::cout << "Press 'enter' to continue with the file " << FILE2 << "." << endl;
+	pause = getchar();
+	calculate_plausibilities(FILE2, OUTPUT2);
+
+	std::cout << "To exit this programm press 'enter'." << endl;
+	pause = getchar();
+
+	return 0;
+}
+\end{lstlisting}
+
+\section*{dempster.h}
+\begin{lstlisting}[caption=Code dempster.h]
+#ifndef _DEMPSTER_H
+#define _DEMPSTER_H
+
+#include <vector>
+#include <string>
+#include <set>
+#include "settings.h"
+
+namespace std {
+
+	struct Evidence {
+		Evidence() {} // to dynamically add elements to a vector 
+		set<string> emotions;
+		double value = 0.0;
+	};
+
+	vector<Evidence> dempster(set<string> speedEmotions, double speedConfidence,
+							  set<string> pitchEmotions, double pitchConfidence,
+							  set<string> intensityEmotions, double intensityConfidence) {
+
+		// Initialization of the three evidences
+		vector<Evidence*> m_1;
+		Evidence m_1a;
+		Evidence m_1o; // Omega
+		vector<Evidence*> m_2;
+		Evidence m_2a;
+		Evidence m_2o; // Omega
+		vector<Evidence*> m_3;
+		Evidence m_3a;
+		Evidence m_3o; // Omega
+
+					   // m_1: Speed
+		m_1a.emotions = speedEmotions;
+		m_1a.value = speedConfidence;
+		m_1o.emotions = OMEGA;
+		m_1o.value = (1 - m_1a.value);
+		m_1.push_back(&m_1a);
+		m_1.push_back(&m_1o); //OMEGA - index 1
+
+							  // m_2: Pitch
+		m_2a.emotions = pitchEmotions;
+		m_2a.value = pitchConfidence;
+		m_2o.emotions = OMEGA;
+		m_2o.value = (1 - m_2a.value);
+		m_2.push_back(&m_2a);
+		m_2.push_back(&m_2o); //OMEGA - index 1
+
+							  // m_3: Intensity
+		m_3a.emotions = intensityEmotions;
+		m_3a.value = intensityConfidence;
+		m_3o.emotions = OMEGA;
+		m_3o.value = (1 - m_3a.value);
+		m_3.push_back(&m_3a);
+		m_3.push_back(&m_3o); //OMEGA - index 1
+
+							  // m_1 U m_2 = m_12
+		vector<Evidence> m_12; // Call by copy required - variables are set by lower scope (for loop)
+
+		for(size_t i = 0; i < m_1.size(); i++) {
+			for(size_t j = 0; j < m_2.size(); j++) {
+				Evidence temp;
+				temp.value = m_1[i]->value * m_2[j]->value;
+
+				set_intersection(m_1[i]->emotions.begin(), m_1[i]->emotions.end(),
+								 m_2[j]->emotions.begin(), m_2[j]->emotions.end(),
+								 inserter(temp.emotions, temp.emotions.begin()));
+
+				m_12.push_back(temp);
+			}
+		}
+
+		// Check for empty set and correct if necessary
+		// (only possible once: in intersection m_1 U m_2 without Omega)
+		for(size_t i = 0; i < m_12.size(); i++) {
+			if(m_12[i].emotions.empty()) {
+				cout << " Note: Found empty set in m_12" << endl;
+
+				double k = 1 / (1 - m_12[i].value); // calculate correction factor k
+
+				m_12.erase(m_12.begin() + i); // delete empty element i
+
+				for(size_t a = 0; a < m_12.size(); a++) { // correct remaining elements with k
+					m_12[a].value *= k;
+				}
+
+				cout << " Note: Corrected m_12 with value k=" << k << endl;
+
+				break; // leave for loop since there can only be one correction
+			}
+		}
+
+		// m_12 U m_3 = m_123
+		vector<Evidence> m_123; //call by copy required here - because the variables are created in a loop dynamically - do not save only pointers in this vector
+
+		for(size_t i = 0; i < m_12.size(); i++) {
+			for(size_t j = 0; j < m_3.size(); j++) {
+				Evidence temp; //empty element
+				temp.value = (m_12[i].value) * (m_3[j]->value);
+
+				set_intersection(m_12[i].emotions.begin(), m_12[i].emotions.end(),
+								 m_3[j]->emotions.begin(), m_3[j]->emotions.end(),
+								 inserter(temp.emotions, temp.emotions.begin()));
+
+				m_123.push_back(temp);
+			}
+		}
+
+		// Check for empty set and correct if necessary
+		// (multiple empty sets possible)
+		bool correction = false;
+		double sum_empty = 0.0;
+		vector<size_t> index_to_delete;
+
+		for(size_t k = 0; k < m_123.size(); k++) {
+			if(m_123[k].emotions.empty()) {
+				cout << " Note: Found empty set in m_123" << endl;
+
+				correction = true;
+				sum_empty += m_123[k].value;
+
+				index_to_delete.push_back(k); //remember which element needs to be removed
+			}
+		}
+
+		// correct if empty set found
+		if(correction) {
+			double k = 1 / (1 - sum_empty);
+
+			// delete empty elements
+			for(size_t b = 0; b < index_to_delete.size(); b++) {
+				m_123.erase(m_123.begin() + index_to_delete[b]);
+			}
+
+			// correct remaining elements with k
+			for(size_t a = 0; a < m_123.size(); a++) {
+				m_123[a].value *= k;
+			}
+
+			cout << " Note: Corrected m_123 with k=" << k << endl;
+		}
+
+		return m_123;
+	}
+
+}
+
+#endif // _DEMPSTER_H
+\end{lstlisting}
+
+
+\section*{settings.h}
+\begin{lstlisting}[caption=Code settings.h]
+/*
+	This file contains all settings
+*/
+
+#ifndef _SETTINGS_H
+#define _SETTINGS_H
+
+// I/O File Settings
+#define FILE1 "E_004.csv" // Path of 1st file
+#define FILE2 "E_004b.csv" // Path of 2nd file
+//#define FILE3 "E_004c.csv" // Path of 3rd file - Not applieable for this project
+
+#define OUTPUT1 "resulta.csv" // Path of Output File
+#define OUTPUT2 "resultb.csv" //Path of second output file
+
+#define DATA_START 4 //the data starts at element of 4, or index 4 (to skip header)
+
+// Definitions of Emotions
+#define FEAR "A" // Angst
+#define SURPRISE "U" // Ueberraschung
+#define ANGER "W" // Wut
+#define JOY "F" // Freude 
+#define DISGUST "E" // Ekel
+#define SORROW "T" // Traurigkeit
+
+// Definitions of Confidences
+#define CONF_SPEED 0.6
+#define CONF_PITCH 0.8
+#define CONF_INTENSITY 0.7
+
+// Definitions 
+// ...for Speed 
+#define SLOW 2.5 //untere Grenze
+#define FAST 5.6 //obere Grenze
+
+// ...for Pitch and Intensity
+#define LOW1 "sehr niedrig"
+#define LOW2 "niedrig"
+#define MEDIUM "normal"
+#define HIGH1 "hoch"
+#define HIGH2 "sehr hoch"
+
+// Definitions for Plausibility
+#define PL_MAX "max"
+
+// Definitions for Output File
+#define CSV_SEP ';'
+#define CSV_ENDL '\n'
+#define HEAD_CLK "Takt"
+#define HEAD_MAX "Max"
+#define HEAD_MAXVAL "PL of Max"
+
+namespace std {
+
+	set<string> OMEGA;
+
+	void global_init() {
+		OMEGA.insert(FEAR);
+		OMEGA.insert(SURPRISE);
+		OMEGA.insert(ANGER);
+		OMEGA.insert(JOY);
+		OMEGA.insert(DISGUST);
+		OMEGA.insert(SORROW);
+	};
+
+}
+
+#endif // _SETTINGS_H
+\end{lstlisting}
