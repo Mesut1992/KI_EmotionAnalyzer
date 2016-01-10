@@ -19,3 +19,5 @@ dokumentation.pdf
 *.toc
 *.lot
 latexmkrc
+*.txss
+*.sdf

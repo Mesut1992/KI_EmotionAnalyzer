@@ -17,6 +17,22 @@
 
 using namespace std;
 
+// Predefined Functions (all functions in this file):
+
+double toDouble(string s);
+void printFile(string filename);
+vector<string> readFileInVector(string filename);
+void writeResultsToFile(string filename, 
+						vector<vector<Evidence>> evidences, 
+						vector<map<string, double>> plausibilities);
+void printAverageSpeed(vector<string> data);
+set<string> getEmotionOfSpeed(double);
+set<string> getEmotionOfPitch(string);
+set<string> getEmotionOfIntensity(string);
+void calculate_plausibilities(string input, string output);
+
+// Implementation
+
 double toDouble(string s) {
 	replace(s.begin(), s.end(), ',', '.');
 	return atof(s.c_str());
@@ -27,8 +43,10 @@ void printFile(string filename) {
 	string value;
 
 	while(file.good()) {
-		getline(file, value, ';'); // read a string until next comma: http://www.cplusplus.com/reference/string/getline/
-		//cout << string(value, 1, value.length() - 2); // display value removing the first and the last character from it
+		getline(file, value, ';'); // read a string until next comma:
+								// http://www.cplusplus.com/reference/string/getline/
+		//cout << string(value, 1, value.length() - 2); 
+		// display value removing the first and the last character from it
 		cout << string(value) << "-";
 	}
 
@@ -66,9 +84,12 @@ vector<string> readFileInVector(string filename) {
 	return read;
 }
 
-void writeResultsToFile(string input, string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
+void writeResultsToFile(string input, string filename, 
+						vector<vector<Evidence>> evidences, 
+						vector<map<string, double>> plausibilities) {
 	if(evidences.size() != plausibilities.size()) {
-		cout << " Error: Something went wrong while calculating evidences and plausibilities!" << endl;
+		cout << " Error: Something went wrong while calculating "
+			<< "evidences and plausibilities!" << endl;
 
 		return;
 	}
@@ -216,51 +237,6 @@ set<string> getEmotionOfIntensity(string value) {
 	}
 
 	return temp;
-}
-
-map<string, double> plausibility(vector<Evidence> data) {
-	std::cout << "Plausibility:" << endl;
-
-	map<string, double> plausibility;
-
-	//init
-	for(const auto& emotion : OMEGA) {
-		plausibility[emotion] = 0.0;
-	}
-
-	plausibility[PL_MAX] = 0.0;
-
-	for(size_t i = 0; i < data.size(); i++) {
-		//for each emotion
-		for(const auto& emotion : OMEGA) {
-			if(data[i].emotions.find(emotion) != data[i].emotions.end()) {
-				//found element
-				plausibility[emotion] += data[i].value;
-			}
-		}
-	}
-
-	//print
-	string e;
-	bool init = false;
-	for(const auto& emotion : OMEGA) {
-		if(init == false) {
-			init = true;
-			plausibility[PL_MAX] = plausibility[emotion];
-			e = emotion;
-		}
-
-		if(plausibility[PL_MAX] < plausibility[emotion]) {
-			plausibility[PL_MAX] = plausibility[emotion];
-			e = emotion;
-		}
-
-		std::cout << "PI for Emotion: " << emotion << " : " << plausibility[emotion] << " " << endl;
-	}
-
-	std::cout << "Max PI found in Emotion: " << e << " : " << plausibility["max"] << endl;
-
-	return plausibility;
 }
 
 void calculate_plausibilities(string input, string output) {
