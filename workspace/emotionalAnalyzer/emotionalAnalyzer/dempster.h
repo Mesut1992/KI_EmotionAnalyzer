@@ -1,6 +1,3 @@
-//TODO Extract all macros to header file and import it, should be handled like a settings file
-//#include "macros.h"
-
 #ifndef _DEMPSTER_H
 #define _DEMPSTER_H
 
@@ -148,5 +145,3 @@ namespace std {
 }
 
 #endif // _DEMPSTER_H
-
-

@@ -8,9 +8,10 @@
 // I/O File Settings
 #define FILE1 "E_004.csv" // Path of 1st file
 #define FILE2 "E_004b.csv" // Path of 2nd file
-#define FILE3 "E_004c.csv" // Path of 3rd file
+//#define FILE3 "E_004c.csv" // Path of 3rd file - Not applieable for this project
 
-#define OUTPUT "result.csv" // Path of Output File
+#define OUTPUT1 "resulta.csv" // Path of Output File
+#define OUTPUT2 "resultb.csv" //Path of second output file
 
 #define DATA_START 4 //the data starts at element of 4, or index 4 (to skip header)
 

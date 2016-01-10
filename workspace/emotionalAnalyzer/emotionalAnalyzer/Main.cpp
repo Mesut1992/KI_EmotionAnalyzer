@@ -17,8 +17,6 @@
 
 using namespace std;
 
-//
-
 double toDouble(string s) {
 	replace(s.begin(), s.end(), ',', '.');
 	return atof(s.c_str());
@@ -48,12 +46,10 @@ vector<string> readFileInVector(string filename) {
 		counter++;
 
 		if((counter % 4) == 0) {
-			getline(file, value, CSV_ENDL); // read a string until next comma: 
-										// http://www.cplusplus.com/reference/string/getline/
+			getline(file, value, CSV_ENDL); // read a string until next comma
 		}
 		else {
-			getline(file, value, CSV_SEP); // read a string until next comma: 
-										// http://www.cplusplus.com/reference/string/getline/
+			getline(file, value, CSV_SEP); // read a string until next comma
 		}
 
 		read.push_back(value);
@@ -70,7 +66,7 @@ vector<string> readFileInVector(string filename) {
 	return read;
 }
 
-void writeResultsToFile(string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
+void writeResultsToFile(string input, string filename, vector<vector<Evidence>> evidences, vector<map<string, double>> plausibilities) {
 	if(evidences.size() != plausibilities.size()) {
 		cout << " Error: Something went wrong while calculating evidences and plausibilities!" << endl;
 
@@ -112,6 +108,7 @@ void writeResultsToFile(string filename, vector<vector<Evidence>> evidences, vec
 	}
 
 	file.close();
+	std::cout << "Saved results of data " << input << " in file: " << filename << "." << endl;
 }
 
 void printAverageSpeed(vector<string> data) {
@@ -162,7 +159,7 @@ set<string> getEmotionOfSpeed(double value) {
 		temp.insert(ANGER); // Wut
 		temp.insert(JOY); // Freude
 	}
-	else { //Sprechgeschwindigkeit is normal - so it is between slow and fast (2.5 < x < 6.6)
+	else { //Speed is normal - so it is between slow and fast (2.5 < x < 6.6)
 		temp.insert(ANGER); // Wut
 		temp.insert(JOY); // Freude
 	}
@@ -294,40 +291,25 @@ void calculate_plausibilities(string input, string output) {
 		std::cout << endl;
 	}
 
-	writeResultsToFile(output, evidences, plausibilities);
+	writeResultsToFile(input, output, evidences, plausibilities);
 
 	cout << " Note: Done." << endl;
 }
 
 int main() {
 	global_init();
-	//Read file input
-	//vector<string> file1 = readFileInVector(FILE1);
-	//vector<string> file2 = readFileInVector(FILE2);
-	//vector<string> file3 = readFileInVector(FILE3); File3 is not relevant for this project.
-	//this functions are printing the example data
-	//use this for debug purposes
 
-	//printFile(FILE1);
-	/*printFile(FILE2);
-	printAverageSprechgeschwindigkeit(file1);
-	printAverageSprechgeschwindigkeit(file2);
-	*/
+	char pause;
+	std::cout << "Press 'enter' to start with the file " << FILE1 << "." << endl;
+	pause = getchar();
+	calculate_plausibilities(FILE1, OUTPUT1);
+		
+	std::cout << "Press 'enter' to continue with the file " << FILE2 << "." << endl;
+	pause = getchar();
+	calculate_plausibilities(FILE2, OUTPUT2);
 
-	//Init program
-	calculate_plausibilities(FILE1, OUTPUT);
+	std::cout << "To exit this programm press 'enter'." << endl;
+	pause = getchar();
 
-	//TEST - DEBUG DELETE LATER
-	//set<string> test = getEmotionOfSprechgeschwindigkeit(toDouble(file1[5]));
-	//set<string> test2 = (getEmotionOfTonlage(file1[6]));
-	//set<string> test3 = (getEmotionOfSchallstaerke(file1[7]));
-
-	//Goes through set and finds each element
-	//for(const auto& elem : test) {
-	//	std::cout << elem << endl;
-	//}
-
-	//DELETE TILL HERE
-	char dontstopPrgm = getchar();
 	return 0;
 }
