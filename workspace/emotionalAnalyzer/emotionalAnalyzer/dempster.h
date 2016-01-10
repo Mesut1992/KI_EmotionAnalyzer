@@ -32,7 +32,7 @@ namespace std {
 		Evidence m_3a;
 		Evidence m_3o; // Omega
 
-					   // m_1: Speed
+		// m_1: Speed
 		m_1a.emotions = speedEmotions;
 		m_1a.value = speedConfidence;
 		m_1o.emotions = OMEGA;
@@ -40,7 +40,7 @@ namespace std {
 		m_1.push_back(&m_1a);
 		m_1.push_back(&m_1o); //OMEGA - index 1
 
-							  // m_2: Pitch
+		// m_2: Pitch
 		m_2a.emotions = pitchEmotions;
 		m_2a.value = pitchConfidence;
 		m_2o.emotions = OMEGA;
@@ -48,7 +48,7 @@ namespace std {
 		m_2.push_back(&m_2a);
 		m_2.push_back(&m_2o); //OMEGA - index 1
 
-							  // m_3: Intensity
+		// m_3: Intensity
 		m_3a.emotions = intensityEmotions;
 		m_3a.value = intensityConfidence;
 		m_3o.emotions = OMEGA;
@@ -145,6 +145,52 @@ namespace std {
 		return m_123;
 	}
 
+	map<string, double> plausibility(vector<Evidence> data) {
+		std::cout << "Plausibility:" << endl;
+
+		map<string, double> plausibility;
+
+		//init
+		for(const auto& emotion : OMEGA) {
+			plausibility[emotion] = 0.0;
+		}
+
+		plausibility[PL_MAX] = 0.0;
+
+		for(size_t i = 0; i < data.size(); i++) {
+			//for each emotion
+			for(const auto& emotion : OMEGA) {
+				if(data[i].emotions.find(emotion) != data[i].emotions.end()) {
+					//found element
+					plausibility[emotion] += data[i].value;
+				}
+			}
+		}
+
+		//print
+		string e;
+		bool init = false;
+		for(const auto& emotion : OMEGA) {
+			if(init == false) {
+				init = true;
+				plausibility[PL_MAX] = plausibility[emotion];
+				e = emotion;
+			}
+
+			if(plausibility[PL_MAX] < plausibility[emotion]) {
+				plausibility[PL_MAX] = plausibility[emotion];
+				e = emotion;
+			}
+
+			std::cout << "PI for Emotion: " << emotion << " : "
+				<< plausibility[emotion] << " " << endl;
+		}
+
+		std::cout << "Max PI found in Emotion: " << e << " : "
+			<< plausibility["max"] << endl;
+
+		return plausibility;
+	}
 }
 
 #endif // _DEMPSTER_H

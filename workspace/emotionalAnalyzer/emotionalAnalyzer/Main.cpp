@@ -29,7 +29,6 @@ void printAverageSpeed(vector<string> data);
 set<string> getEmotionOfSpeed(double);
 set<string> getEmotionOfPitch(string);
 set<string> getEmotionOfIntensity(string);
-map<string, double> plausibility(vector<Evidence> data);
 void calculate_plausibilities(string input, string output);
 
 // Implementation
@@ -239,53 +238,6 @@ set<string> getEmotionOfIntensity(string value) {
 	}
 
 	return temp;
-}
-
-map<string, double> plausibility(vector<Evidence> data) {
-	std::cout << "Plausibility:" << endl;
-
-	map<string, double> plausibility;
-
-	//init
-	for(const auto& emotion : OMEGA) {
-		plausibility[emotion] = 0.0;
-	}
-
-	plausibility[PL_MAX] = 0.0;
-
-	for(size_t i = 0; i < data.size(); i++) {
-		//for each emotion
-		for(const auto& emotion : OMEGA) {
-			if(data[i].emotions.find(emotion) != data[i].emotions.end()) {
-				//found element
-				plausibility[emotion] += data[i].value;
-			}
-		}
-	}
-
-	//print
-	string e;
-	bool init = false;
-	for(const auto& emotion : OMEGA) {
-		if(init == false) {
-			init = true;
-			plausibility[PL_MAX] = plausibility[emotion];
-			e = emotion;
-		}
-
-		if(plausibility[PL_MAX] < plausibility[emotion]) {
-			plausibility[PL_MAX] = plausibility[emotion];
-			e = emotion;
-		}
-
-		std::cout << "PI for Emotion: " << emotion << " : " 
-			<< plausibility[emotion] << " " << endl;
-	}
-
-	std::cout << "Max PI found in Emotion: " << e << " : " 
-		<< plausibility["max"] << endl;
-
-	return plausibility;
 }
 
 void calculate_plausibilities(string input, string output) {

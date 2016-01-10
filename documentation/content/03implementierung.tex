@@ -30,8 +30,24 @@ Im zweiten Teil können die Konfidenzwerte festgelegt werden, welche in Kapitel 
 Im dritten Teil sind jegliche Werte der Ausprägungen festgelegt. Beispielsweise kann hier festgelegt werden, welcher Wert für den unteren Teil der Sprechgeschwindigkeit ausschlaggebend ist (Kapitel \ref{sprechgeschwindigkeit_auspr}).
 
 \section{dempster.h}
-\textbf{HIER NOCH GENAU EINFÜGEN, WAS IN DER DEMPSTER DATEI IST}
+In dieser Datei sind alle unmittelbar mit der Evidenzberechnung zusammenhängenden Funktionen zu finden. Die \textit{Dempster}-Funktion erwartet alle Evidenzen (\(m_1\), \(m_2\) und \(m_3\)) mit Gewichtung und akkumuliert sie zur finalen Evidenz \(m_(123)\). Des Weiteren beinhaltet sie eine Funktion zur Berechnung der \textit{Plausibilitäten}.
 
+Zur Berechnung der Evidenzen wird das folgende Strukt benutzt:
+
+\begin{lstlisting}[caption=Strukt zur Evidenzberechnung, label=structcode]
+struct Evidence {
+	Evidence() {}
+	set<string> emotions;
+	double value = 0.0;
+};
+\end{lstlisting}
+
+Entscheidend sind hier das Set und der double-Wert. \textit{emotions} beinhaltet alle zu dieser Evidenz gehörenden Emotionen (beispielsweise \textit{Wut} und \textit{Freude}) und kann auch leer sein, und \textit{value} speichert die dazugehörige Konfidenz. Das dazugehörige Omega wird mit dem selben Strukt gespeichert; \textit{emotions} beinhaltet hierbei alle möglichen Emotionen und \textit{value} ist \(1 - (Konfidenz der Evidenz)\). Die Evidenz und das dazugehörige Omega werden in einem Vektor mit zwei Komponenten gespeichert.
+
+Zuerst wird aus \(m_1\) und \(m_2\) die Evidenz \(m_(12)\) durch Vereinigung der Sets und Multiplikation der Konfidenzen gebildet, und es entstehen vier mögliche Kombinationen. Anschließend wird die Kombination aus Evidenz von \(m_1\) und \(m_2\) auf einen Konflikt untersucht; sollte ein Konflikt auftreten, wird \(k\) gebildet, die entsprechende leere Menge aus \(m_(12)\) entfernt und die übrigen Konfidenzen mit \(\frac{1}{1-k}\) korrigiert.
+
+Durch Akkumulation von \(m_(12)\) und \(m_3\) entsteht auf gleichem Wege \(m_(123)\), und die resultierenden Mengen werden auf Konflikte untersucht und gegebenenfalls gelöscht und der Rest korrigiert.
+ 
 \section{Main.cpp}
 Die Main.cpp Datei beinhaltet logischerweise die \textit{Main-Funktion}, welche bei Programmstart aufgerufen wird.
 Zusätzlich zu der Main-Funktion, lassen sich weitere Funktionen finden. Der folgende Ausschnitt zeigt jegliche Funktionssignaturen der Main.cpp und ist im Teil \textit{predefined Functions} zu finden: 
